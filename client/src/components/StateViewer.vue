@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import StateViewerWallet from 'StateViewerWallet'
+import StateViewerWallet from './StateViewerWallet'
 
 export default {
   name: 'StateViewer',
