@@ -1,15 +1,15 @@
 <template>
   <div class="StateViewer">
     <div>
-    <input type="radio" v-model="selectedTab" value="wallet"/>
+    <input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
     <label for="wallet"> Wallet </label>
-    <input type="radio" v-model="selectedTab" value="bank"/>
+    <input type="radio" v-model="selectedTab" value="bank" id="bank"/>
     <label for="bank"> Bank </label>
-    <input type="radio" v-model="selectedTab" value="materialStorage"/>
+    <input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
     <label for="materialStorage"> Material Storage </label>
-    <input type="radio" v-model="selectedTab" value="sharedInventory"/>
+    <input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
     <label for="sharedInventory"> Shared Inventory </label>
-    <input type="radio" v-model="selectedTab" value="characters"/>
+    <input type="radio" v-model="selectedTab" value="characters" id="characters"/>
     <label for="characters"> Characters </label>
 
     </div>
@@ -41,7 +41,7 @@ export default {
     
   },
   props: {
-
+    accountState: Object
   },
   data() {
     return {
