@@ -14,17 +14,31 @@
 
     </div>
     <StateViewerWallet v-if="selectedTab==='wallet'"/>
-    <div v-else>not wallet</div>
+    <StateViewerBank v-if="selectedTab==='bank'"/>
+    <StateViewerMaterialStorage v-if="selectedTab==='materialStorage'"/>
+    <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"/>
+    <StateViewerAllCharacters v-if="selectedTab==='characters'"/>
+
   </div>
 </template>
 
 <script>
+import StateViewerBank from './StateViewerBank'
+import StateViewerAllCharacters from './StateViewerAllCharacters'
+import StateViewerMaterialStorage from './StateViewerMaterialStorage'
+import StateViewerSharedInventory from './StateViewerSharedInventory'
 import StateViewerWallet from './StateViewerWallet'
+
 
 export default {
   name: 'StateViewer',
   components: {
+    StateViewerBank,
+    StateViewerAllCharacters,
+    StateViewerMaterialStorage,
+    StateViewerSharedInventory,
     StateViewerWallet
+    
   },
   props: {
 
