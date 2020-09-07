@@ -16,6 +16,11 @@ name: "currency",
 
   },
   props: {
+    //  :imageUrl="bankItem?itemLookup[bankItem.id].icon:null"
+    //  :name="bankItem?itemLookup[bankItem.id].name:null"
+    //  :id="bankItem?bankItem.id:null"
+    //  :description="bankItem?itemLookup[bankItem.id].description:null"
+    //  :quantity="bankItem?bankItem.count:null"
     imageUrl: {
       type: String,
       default: "https://render.guildwars2.com/file/98457F504BA2FAC8457F532C4B30EDC23929ACF9/619316.png"

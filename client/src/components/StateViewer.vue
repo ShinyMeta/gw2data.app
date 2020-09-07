@@ -21,7 +21,10 @@
       :wallet="accountState.wallet" 
       :currencyLookup="currencyLookup"
       />
-    <StateViewerBank v-if="selectedTab==='bank'"/>
+    <StateViewerBank v-if="selectedTab==='bank'"
+      :bank="accountState.bank" 
+      :itemLookup="itemLookup"
+      />
     <StateViewerMaterialStorage v-if="selectedTab==='materialStorage'"/>
     <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"/>
     <StateViewerAllCharacters v-if="selectedTab==='characters'"/>
