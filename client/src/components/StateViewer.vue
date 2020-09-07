@@ -1,19 +1,26 @@
 <template>
   <div class="StateViewer">
     <div>
-    <input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
-    <label for="wallet"> Wallet </label>
-    <input type="radio" v-model="selectedTab" value="bank" id="bank"/>
-    <label for="bank"> Bank </label>
-    <input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
-    <label for="materialStorage"> Material Storage </label>
-    <input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
-    <label for="sharedInventory"> Shared Inventory </label>
-    <input type="radio" v-model="selectedTab" value="characters" id="characters"/>
-    <label for="characters"> Characters </label>
-
+      <input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
+        <label for="wallet"> Wallet </label>
+      <input type="radio" v-model="selectedTab" value="bank" id="bank"/>
+        <label for="bank"> Bank </label>
+      <input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
+        <label for="materialStorage"> Material Storage </label>
+      <input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
+        <label for="sharedInventory"> Shared Inventory </label>
+      <input type="radio" v-model="selectedTab" value="characters" id="characters"/>
+        <label for="characters"> Characters </label>
     </div>
-    <StateViewerWallet v-if="selectedTab==='wallet'"/>
+
+
+
+
+
+    <StateViewerWallet v-if="selectedTab==='wallet'" 
+      :wallet="accountState.wallet" 
+      :currencyLookup="currencyLookup"
+      />
     <StateViewerBank v-if="selectedTab==='bank'"/>
     <StateViewerMaterialStorage v-if="selectedTab==='materialStorage'"/>
     <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"/>
@@ -41,7 +48,9 @@ export default {
     
   },
   props: {
-    accountState: Object
+    accountState: Object,
+    currencyLookup: Object,
+    itemLookup: Object
   },
   data() {
     return {
