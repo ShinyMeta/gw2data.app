@@ -1,15 +1,33 @@
 <template>
-  <h3>Chaks and Confettis and Khan Urs, Oh My!</h3>
+<div>
+  <img class="currencyIcon"
+    :src="imageUrl" 
+    :alt="name" 
+    :title="`${name} - ${id}\n${description}`"
+    />
+  <span>{{quantity}}</span>
+</div>
 </template>
 
 <script>
 export default {
-name: "StateViewerMaterialStorage",
+name: "Item",
   components:{
 
   },
   props: {
-
+    imageUrl: {
+      type: String,
+      default: "/images/empty_item_slot.png"
+    },
+    name: String,
+    id: Number,
+    description: String,
+    quantity: Number,
+    showPosNeg: {
+      type: Boolean,
+      default: false
+    }
   }
 }
 </script>
