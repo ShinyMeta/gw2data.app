@@ -35,15 +35,6 @@ export default {
       api: client(),
       apikey: 'CFBA11E8-CDAD-144E-82DF-1F3E8E1D7D855C321BCE-88F2-46D5-A27F-0DA6FC88F39A',
       apikeyAuthenticated: false,
-      accountState: {
-        wallet:[],
-        bank:[],
-        materialStorage:[],
-        sharedInventory:[],
-        characters:[],
-      },
-      currencyLookup:{},
-      itemLookup:{},
     }
   },
   methods:{

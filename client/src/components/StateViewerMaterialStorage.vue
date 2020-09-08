@@ -2,18 +2,21 @@
   <div>
     <h1>Mats</h1>
 
-    <div v-for="(category) in ( materialStorageDetailsSortedByOrder )"
-      :key="category.id">
+    <div v-for="(category) in ( materialStorageDetails )"
+      :key="category.id"
+      >
       <h3>{{category.name}}</h3>
-      <Item v-for="(itemid, index) in category.items"
-        :key="`${category.name}_${index}`"
-        :imageUrl="itemLookup[itemid].icon"
-        :name="itemLookup[itemid].name"
-        :id="itemid"
-        :description="itemLookup[itemid].description"
-        :quantity="itemid"
-        :grid-area="`${Math.floor(index/10)+1}/${index%10+1}/span 1/span 1`"
-        />
+      <div class="materialStorageSection">
+        <Item v-for="(itemid, index) in category.items"
+          :key="`${category.name}_${index}`"
+          :imageUrl="itemLookup[itemid]?itemLookup[itemid].icon:undefined"
+          :name="itemLookup[itemid]?itemLookup[itemid].name:undefined"
+          :id="itemid"
+          :description="itemLookup[itemid]?itemLookup[itemid].description:undefined"
+          :quantity="materialStorage.itemidLookup&&materialStorage.itemidLookup[itemid]?materialStorage.itemidLookup[itemid].count:0"
+          :grid-area="`${Math.floor(index/10)+1}/${index%10+1}/span 1/span 1`"
+          />
+      </div>
 
     </div>
   </div>
@@ -34,22 +37,31 @@ name: "StateViewerMaterialStorage",
     materialStorageDetails: Array
 
   },
-  computed: {
-    materialStorageDetailsSortedByOrder() {
-      let orderArray = this.materialStorageDetails.map((x) => x.order)
-      let orderLookup = {}
-      this.materialStorageDetails.forEach((category) => {
-        orderLookup[category.order] = category
-      })
-      orderArray.sort((a, b) => a - b)
-      return orderArray.map((x) => orderLookup[x])
-    }
-  }
+  methods: {
+    find
+  },
+  // computed: {
+  //   materialStorageDetailsSortedByOrder() {
+  //     let orderArray = this.materialStorageDetails.map((x) => x.order)
+  //     let orderLookup = {}
+  //     this.materialStorageDetails.forEach((category) => {
+  //       orderLookup[category.order] = category
+  //     })
+  //     orderArray.sort((a, b) => a - b)
+  //     return orderArray.map((x) => orderLookup[x])
+  //   }
+  // }
 
   
 }
 </script>
 
-<style>
+<style scoped>
+  .materialStorageSection {
+    display: grid;
+    justify-content: center;
+    grid-template: repeat(auto-fill, 64px) / repeat(10 , 64px);
+  }
+
 
 </style>

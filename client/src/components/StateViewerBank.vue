@@ -1,13 +1,14 @@
 <template>
   <div>
     <h1>Bank</h1>
-    <div id="bankItems" :style="`grid-template: repeat((${bank.length/10}, 64px) / repeat(10 , 64px)`">
+    <div id="bankItems" 
+    :style="`grid-template: repeat(${bank.length/10}, 64px) / repeat(10 , 64px)`">
       <Item class="item" v-for="(bankItem,index) in bank"
         :key="`bankItem_${index}`"
-        :imageUrl="bankItem?itemLookup[bankItem.id].icon:undefined"
-        :name="bankItem?itemLookup[bankItem.id].name:undefined"
+        :imageUrl="bankItem&&itemLookup[bankItem.id]?itemLookup[bankItem.id].icon:undefined"
+        :name="bankItem&&itemLookup[bankItem.id]?itemLookup[bankItem.id].name:undefined"
         :id="bankItem?bankItem.id:undefined"
-        :description="bankItem?itemLookup[bankItem.id].description:undefined"
+        :description="bankItem&&itemLookup[bankItem.id]?itemLookup[bankItem.id].description:undefined"
         :quantity="bankItem?bankItem.count:undefined"
         :grid-area="`${Math.floor(index/10)+1}/${index%10+1}/span 1/span 1`"
         />
@@ -27,7 +28,7 @@ export default {
   props: {
     bank: Array,
     itemLookup: Object    
-  }
+  },
 }
 </script>
 

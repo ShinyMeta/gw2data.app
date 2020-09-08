@@ -62,7 +62,6 @@ export default {
         })
         this.getItemsForLookup(Array.from(itemIDSet))
       })
-
       //Material Storage
       this.api.account().materials().get().then((materialStorage) => {
         //create matstorage lookup
@@ -81,6 +80,7 @@ export default {
         })
         this.getItemsForLookup(Array.from(itemIDSet))
       })
+      //shared inventory
       this.api.account().inventory().get().then((sharedInventory) => {
         this.accountState.sharedInventory = sharedInventory
         //request details from all new items
@@ -90,6 +90,7 @@ export default {
         })
         this.getItemsForLookup(Array.from(itemIDSet))
       })
+      //character inventories
       this.api.account().characters().all().then((characters) => {
         this.accountState.characters = characters
         //request details from all new items
@@ -103,14 +104,17 @@ export default {
 
     getCurrenciesForLookup(){
       this.api.currencies().all().then((currencies) => {
+        let newCurrencies = {}
         currencies.forEach((currency) => {
-          this.currencyLookup[currency.id] = currency
+          newCurrencies[currency.id] = currency
         })
+        this.currencyLookup = Object.assign({}, this.currencyLookup, newCurrencies)
       })
     },
 
     getMaterialStorageDetails(){
       this.api.materials().all().then((materialStorageDetails) => {
+        materialStorageDetails.sort((a, b) => a.order - b.order)
         this.materialStorageDetails = materialStorageDetails
       })
     },
@@ -118,9 +122,11 @@ export default {
     getItemsForLookup(ids) {
       console.log(ids)
       this.api.items().many(ids).then((items) => {
+        let newItems = {}
         items.forEach((item) => {
           this.itemLookup[item.id] = item
         })
+        this.itemLookup = Object.assign({}, this.itemLookup, newItems)
       })
     },
 
