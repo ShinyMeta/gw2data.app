@@ -10,7 +10,7 @@
       <button type="submit"> Request Account State </button>
     </form>
 
-    <StateViewer 
+    <StateViewerFromApi 
       :api="api"
       :apikeyAuthenticated="apikeyAuthenticated"
       />
@@ -20,7 +20,7 @@
 <script>
 // @ is an alias to /src
 //import HelloWorld from '@/components/HelloWorld.vue'
-import StateViewer from '@/components/StateViewer.vue'
+import StateViewerFromApi from '@/components/StateViewerFromApi.vue'
 const client = require('gw2api-client')
 
 // Get an instance of an API client
@@ -28,7 +28,7 @@ const client = require('gw2api-client')
 export default {
   name: 'Home',
   components: {
-    StateViewer
+    StateViewerFromApi
   },
   data() {
     return {
