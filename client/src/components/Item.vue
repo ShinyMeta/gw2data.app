@@ -1,11 +1,13 @@
 <template>
 <div>
-  <img class="currencyIcon"
+  <img class="itemIcon"
     :src="imageUrl" 
     :alt="name" 
     :title="`${name} - ${id}\n${description}`"
     />
-  <span>{{quantity}}</span>
+    <!-- <div id="quantityContainer" v-if="quantity"> -->
+      <div id="quantity" v-if="quantity">{{quantity}}</div>
+    <!-- </div> -->
 </div>
 </template>
 
@@ -32,6 +34,22 @@ name: "Item",
 }
 </script>
 
-<style>
+<style scoped>
+.itemIcon {
+  height: 64px;
+}
 
+#quantity {
+  height: 64px;
+  width: 60px;
+  top: -66px;
+  position: relative;
+  text-align: right;  
+  color: white;
+  text-shadow: 
+    -1px 0px 2px black,
+    1px 0px 2px black,
+    0px -1px 2px black,
+    0px 1px 2px black;
+}
 </style>

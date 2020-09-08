@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Bank</h1>
-    <div id="bankItems">
-      <Item v-for="(bankItem,index) in bank"
+    <div id="bankItems" :style="`grid-template: repeat((${bank.length/10}, 64px) / repeat(10 , 64px)`">
+      <Item class="item" v-for="(bankItem,index) in bank"
         :key="`bankItem_${index}`"
         :imageUrl="bankItem?itemLookup[bankItem.id].icon:undefined"
         :name="bankItem?itemLookup[bankItem.id].name:undefined"
@@ -34,7 +34,6 @@ export default {
 <style>
   #bankItems{
     display: grid;
-    grid-template: repeat(auto-fill , 64px) / repeat(10 , 64px)
+    justify-content: center;
   }
-
 </style>
