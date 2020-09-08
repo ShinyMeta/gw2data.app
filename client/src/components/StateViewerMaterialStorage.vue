@@ -38,19 +38,7 @@ name: "StateViewerMaterialStorage",
 
   },
   methods: {
-    find
   },
-  // computed: {
-  //   materialStorageDetailsSortedByOrder() {
-  //     let orderArray = this.materialStorageDetails.map((x) => x.order)
-  //     let orderLookup = {}
-  //     this.materialStorageDetails.forEach((category) => {
-  //       orderLookup[category.order] = category
-  //     })
-  //     orderArray.sort((a, b) => a - b)
-  //     return orderArray.map((x) => orderLookup[x])
-  //   }
-  // }
 
   
 }
