@@ -1,10 +1,9 @@
-'use strict';
 
 const express = require('express');
 const router = express.Router();
 
 
-const AccountState = require('../../models/AccountState.js')
+const AccountState = require(path.relative(__filename, 'server/db/mongoDB/models/AccountState'))
 
 
 module.exports = router;

@@ -16,6 +16,7 @@ module.exports = mongoose.model('AccountState', new mongoose.Schema({
   timestamps: true
 }))
 
+//OLD ITEM DB MODEL
 // module.exports = mongoose.model('item_detail', new mongoose.Schema({
 //   id: {type:Number, unique:true},
 //   chat_link: String, //- The chat link.

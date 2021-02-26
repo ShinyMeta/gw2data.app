@@ -1,12 +1,14 @@
 //knex file for the item and currency lookup tables database
+const {IP} = require('C:/server_secrets/serverIP.json')
+const {user, password} = require('C:/server_secrets/MySQL.json')
 
 module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: '127.0.0.1',
-      user: 'root',
-      password: 'mywebserver',
+      host: IP,
+      user,
+      password,
       database: 'gw2data_dev'
     },
     // debug: true
@@ -15,9 +17,9 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      host: '127.0.0.1',
-      user: 'root',
-      password: 'mywebserver',
+      host: IP,
+      user,
+      password,
       database: 'gw2data'
     }
   }

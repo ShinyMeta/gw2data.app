@@ -2,7 +2,7 @@
 //ExpressServer_dev is the source, and gets babel-node built into ExpressServer for production
 
 
-
+global.path = require('path');
 const bodyParser = require('body-parser')
 const express = require('express')
 // const fs = require('fs')
@@ -31,17 +31,19 @@ let httpServer = http.createServer(app)
 ///////////////////////////////////////////////
 //  PLACE TO RUN SCRIPT ON SERVER START
 ///////////////////////////////////////////////
+require('./db/mongoDB/index.js')(app)
+// const mongoose = require('mongoose')
 
-const mongoose = require('mongoose')
-
-mongoose.connect('mongodb://localhost/gw2data', {useNewUrlParser: true})
-const db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', function() {
-  // we're connected!
-  app.set('db', db);
-  //req.app.get('db').usercollection.find()
-})
+// mongoose.connect('mongodb://localhost/gw2data', {useNewUrlParser: true})
+// // .then(console.log)
+// .catch(console.error)
+// const db = mongoose.connection
+// db.on('error', console.error.bind(console, 'connection error:'))
+// db.once('open', function() {
+//   // we're connected!
+//   app.set('db', db); //
+//   //req.app.get('db').usercollection.find()
+// })
 
 
 
