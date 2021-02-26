@@ -5,7 +5,7 @@
       :alt="name" 
       :title="description"
       />
-    <span>{{name}} - {{quantity}}</span>
+    <span>{{name}} : ({{quantity}})</span>
   </div>
 </template>
 

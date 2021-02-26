@@ -32,7 +32,16 @@ let httpServer = http.createServer(app)
 //  PLACE TO RUN SCRIPT ON SERVER START
 ///////////////////////////////////////////////
 
+const mongoose = require('mongoose')
 
+mongoose.connect('mongodb://localhost/gw2data', {useNewUrlParser: true})
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function() {
+  // we're connected!
+  app.set('db', db);
+  //req.app.get('db').usercollection.find()
+})
 
 
 
@@ -53,6 +62,19 @@ let httpServer = http.createServer(app)
 //req.body will be changed to a json object
 app.use(bodyParser.json({limit: '50mb'}))
   .use(bodyParser.urlencoded({limit: '50mb', extended: true}))
+  .use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.sendStatus(200);
+    }
+    else {
+      next();
+    }
+})
 
 // tells the browser to use https if they are on http
   // .use(helmet())
@@ -71,6 +93,7 @@ app.use(express.static('../client/dist'))
 // })
 
 
+app.use('/api', require('./server_routes/api.js'))
 
 
 
@@ -79,11 +102,6 @@ app.use(express.static('../client/dist'))
 
 
 
-//for that asshole that's just trying to POST over and over again
-// app.post('/', (req, res, next) => {
-//   console.log (`that asshole that keeps POSTing did it again... IP: ${req.ip}`)
-//   res.status(403).send('fuck you')
-// })
 
 
 

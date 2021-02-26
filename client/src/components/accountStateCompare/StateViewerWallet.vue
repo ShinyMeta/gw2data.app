@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1>Wallet Goes Here</h1>
+    <h1>Wallet</h1>
     <Currency v-for="(currency) in wallet" 
       :key="currency.id" 
       :imageUrl="currencyLookup[currency.id].icon"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Currency from './Currency'
+import Currency from '@/components/Currency'
 
 export default {
   name: "StateViewerWallet",

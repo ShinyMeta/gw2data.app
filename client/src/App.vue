@@ -1,12 +1,48 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <nav-bar-top />
     <router-view/>
   </div>
 </template>
+
+
+<script>
+import {mapActions, mapGetters} from 'vuex'
+import NavBarTop from '@/components/navBarTop.vue'
+
+export default {
+  components: {
+    NavBarTop
+  },
+  methods: {
+    ...mapActions([
+      'getUserFromSession',
+      'getApiKeysFromUser'
+    ]),
+    
+  },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
+  },
+  created() {
+    this.getUserFromSession()
+      .then(() => {
+        if (this.user.username) {
+          //also get apikeys
+          return this.getApiKeysFromUser()
+        }
+      })
+      .catch((err) => {
+        //if user isn't set here, redirect to /login
+        console.error(err)
+        this.$router.push('login')
+      })
+  }
+
+}
+</script>
 
 <style>
 #app {
@@ -17,16 +53,4 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

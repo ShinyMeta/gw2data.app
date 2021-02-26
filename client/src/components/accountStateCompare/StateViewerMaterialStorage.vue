@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Item from "./Item"
+import Item from "@/components/Item"
 
 export default {
 name: "StateViewerMaterialStorage",

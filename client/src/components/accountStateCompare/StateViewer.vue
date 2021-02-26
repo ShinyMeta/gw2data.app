@@ -1,16 +1,16 @@
 <template>
   <div class="StateViewer">
     <div>
-      <input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
-        <label for="wallet"> Wallet </label>
-      <input type="radio" v-model="selectedTab" value="bank" id="bank"/>
-        <label for="bank"> Bank </label>
-      <input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
-        <label for="materialStorage"> Material Storage </label>
-      <input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
-        <label for="sharedInventory"> Shared Inventory </label>
-      <input type="radio" v-model="selectedTab" value="characters" id="characters"/>
-        <label for="characters"> Characters </label>
+      <label><input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
+        Wallet </label>
+      <label><input type="radio" v-model="selectedTab" value="bank" id="bank"/>
+        Bank </label>
+      <label><input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
+        Material Storage </label>
+      <label><input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
+        Shared Inventory </label>
+      <label><input type="radio" v-model="selectedTab" value="characters" id="characters"/>
+        Characters </label>
     </div>
 
 
@@ -31,8 +31,12 @@
       :materialStorageDetails="materialStorageDetails"
       />
     <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"
+      :sharedInventory="accountState.sharedInventory" 
+      :itemLookup="itemLookup"
       />
     <StateViewerAllCharacters v-if="selectedTab==='characters'"
+      :characters="accountState.characters" 
+      :itemLookup="itemLookup"
       />
 
   </div>
@@ -44,6 +48,9 @@ import StateViewerAllCharacters from './StateViewerAllCharacters'
 import StateViewerMaterialStorage from './StateViewerMaterialStorage'
 import StateViewerSharedInventory from './StateViewerSharedInventory'
 import StateViewerWallet from './StateViewerWallet'
+
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'StateViewer',
   components: {
@@ -64,9 +71,21 @@ export default {
     return {
       selectedTab: "wallet"
     }
+  },
+  computed: {
+    ...mapGetters([
+      // 'accountState',
+      // 'itemLookup',
+      // 'currencyLookup',
+      // 'materialStorageDetails'
+    ])
   }
 }
 </script>
 
 <style>
+.StateViewer {
+  display: inline;
+  width: 640px;
+}
 </style>
