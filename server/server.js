@@ -5,10 +5,10 @@
 global.path = require('path');
 const bodyParser = require('body-parser')
 const express = require('express')
-// const fs = require('fs')
+const fs = require('fs')
 // const helmet = require('helmet')
 const http = require('http')
-// const https = require('https')
+const https = require('https')
 // const path = require('path')
 
 
@@ -17,7 +17,8 @@ const http = require('http')
 
 //app is for controlling the server
 let app = express()
-let httpServer = http.createServer(app)
+require('./serverConfig.js')[process.env.NODE_ENV || 'development'](app)
+// let httpServer = http.createServer(app)
 
 // const privateKey = fs.readFileSync('C:/SSL/private.key')
 // const certificate = fs.readFileSync('C:/SSL/certificate.crt')
@@ -142,9 +143,9 @@ app.use('/api', require('./server_routes/api.js'))
 
 
 //this starts the server
-httpServer.listen(80, () => {
-  console.log('http listening on port 80')
-})
+// httpServer.listen(80, () => {
+//   console.log('http listening on port 80')
+// })
 
 // httpsServer.listen(443, () => {
 //   console.log('https listening on port 443')
