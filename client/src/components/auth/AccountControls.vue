@@ -23,6 +23,7 @@ export default {
           if (response.status === 200) {
             window.alert(`Come back soon, ${this.user.username}!`)
             this.userWasLoggedOut()
+            this.$router.push('login')
           }
         })
     },

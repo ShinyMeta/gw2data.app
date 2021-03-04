@@ -17,7 +17,7 @@ router
     const newRecord = req.body
     return DB.data_records.create(newRecord)
     .then((id) => {
-      res.status(200).send()
+      res.status(200).send({id})
     })
     .catch((err) => {
       console.error(err)

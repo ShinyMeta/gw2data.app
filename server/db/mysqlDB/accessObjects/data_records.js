@@ -34,6 +34,9 @@ module.exports = (DB) => {
                 }
               })
             )
+            .then((line_ids) => {
+              return id
+            })
         })
         // .then(() => {
 

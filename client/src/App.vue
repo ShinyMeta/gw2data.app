@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <nav-bar-top />
+    <nav-bar-top v-if="user.username !== null"/>
+    <h1 v-if="user.username === null">Login or Register</h1>
     <router-view/>
   </div>
 </template>

@@ -54,6 +54,7 @@ export default {
             this.setUser(response.data)
           }
           // window.alert(`Welcome ${response.data.username}!`)
+          this.$router.push('accountSettings')
           return this.getApiKeysFromUser()
         })
         .catch((err) => {

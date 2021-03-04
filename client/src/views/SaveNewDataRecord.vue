@@ -50,6 +50,12 @@ export default {
         console.log('sending newRecord')
         console.log(newRecord)
         this.$axios.post(`/api/dataRecord/new`, newRecord)
+          .then(({data}) => {
+            this.$router.push(`DataRecordDetail/${data.id}`)
+          })
+          .catch((err) => {
+            alert(err)
+          })
       })
 
     },
