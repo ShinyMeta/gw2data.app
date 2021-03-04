@@ -25,11 +25,9 @@ export default {
         .then((response) => {
           console.log(response)
           this.deleteApiKey(this.apikey.apikey)
-          // window.alert('apikey deleted')
         })
         .catch((err) => {
           console.error(err)
-          // window.alert('uh-oh')
         })
     }
   }

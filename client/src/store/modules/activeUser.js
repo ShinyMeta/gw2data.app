@@ -59,7 +59,7 @@ export default {
         .then((response) => {
           if (response.data !== null) {
             console.log(response.data)
-            window.alert('got apikeys')
+            // window.alert('got apikeys')
             commit('setApiKeys', response.data)
             return true
           }

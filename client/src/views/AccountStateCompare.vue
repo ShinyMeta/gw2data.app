@@ -130,11 +130,11 @@ export default {
       this.loadState()
         .then((result) => {
           console.log(result)
-          alert('yay')
+          // alert('yay')
         })
         .catch((err) => {
           console.error(err)
-          alert('whoops')
+          // alert('whoops')
         })
     },
     requestNewState() {
