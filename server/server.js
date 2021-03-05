@@ -90,10 +90,6 @@ app.use(bodyParser.json({limit: '50mb'}))
 app.use(express.static('../client/dist'))
 
 
-//if request reaches this, then physical file doesn't exist
-// app.get('/gw2data/*', (req, res, next) => {
-//   res.sendFile(path.resolve(__dirname,'./website_public/gw2data/index.html'))
-// })
 
 
 app.use('/api', require('./server_routes/api.js'))
@@ -115,22 +111,23 @@ app.use('/api', require('./server_routes/api.js'))
 ///////////////////////////////////
 
   .use (function routeNotFound(req, res, next){
-  let message = `Not Found:\nRequest from: ${req.ip}\nhttp info:\n`+
-      `method: ${req.method}\nhost: ${req.hostname}\npath: ${req.path}\n`
+    // let message = `Not Found:\nRequest from: ${req.ip}\nhttp info:\n`+
+    //     `method: ${req.method}\nhost: ${req.hostname}\npath: ${req.path}\n`
 
-  if (req.params) message += `params: ${JSON.stringify(req.params)}\n`
-  if (req.query) message += `query: ${JSON.stringify(req.query)}\n`
-  var err = new Error(message)
+    // if (req.params) message += `params: ${JSON.stringify(req.params)}\n`
+    // if (req.query) message += `query: ${JSON.stringify(req.query)}\n`
+    // var err = new Error(message)
 
-  err.status = 404;
-  next(err)
-})
+    // err.status = 404;
+    // next(err)    
+    res.sendFile(path.resolve('../client/dist/index.html'))
+  })
 
   .use (function errorHandler(err, req, res, next){
-  console.error (err);
+    console.error (err);
 
-  res.status(err.status || 500).send('Something went wrong!')
-})
+    res.status(err.status || 500).send('Something went wrong!')
+  })
 
 
 

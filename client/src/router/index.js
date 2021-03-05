@@ -38,6 +38,12 @@ Vue.use(VueRouter)
     name: 'Data Record Detail',
     component: () => import('@/views/DataRecordDetail.vue')
   },
+
+  {
+    path: '*',
+    name: '404 Route Not Found',
+    component: () => import('@/views/NotFound.vue')
+  },
 ]
 
 const router = new VueRouter({
