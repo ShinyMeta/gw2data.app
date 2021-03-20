@@ -34,7 +34,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.statusMessage = 'pass change sent'
-          this.$router.push('login')
+          this.$router.push('/login')
         })
         .catch((err) => {
           console.log(err.response.data.message)
