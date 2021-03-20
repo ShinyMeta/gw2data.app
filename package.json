@@ -10,13 +10,13 @@
   },
   "betterScripts": {
     "client_prod": {
-      "command": "cd client&npm run build",
+      "command": "cd client&npm i&npm run build",
       "env": {
         "NODE_ENV": "production"
       }
     },
     "server_prod": {
-      "command": "cd server&npm start",
+      "command": "cd server&npm i&npm start",
       "env": {
         "NODE_ENV": "production"
       }
