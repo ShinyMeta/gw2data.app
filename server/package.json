@@ -19,9 +19,12 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "gw2api-client": "^7.4.1",
+    "jwt-simple": "^0.5.6",
     "knex": "^0.21.17",
     "mongoose": "^5.10.3",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.5.0",
+    "nodemailer-express-handlebars": "^4.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
   }

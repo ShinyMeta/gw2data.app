@@ -6,7 +6,8 @@ const knex_config = require('./mysqlDBConfig')[process.env.NODE_ENV || 'developm
 
 const DB = knex(knex_config)
 
-DB.data_records = require('./accessObjects/data_records.js')(DB)
+DB.dataRecords = require('./accessObjects/dataRecords.js')(DB)
+DB.users = require('./accessObjects/users.js')(DB)
 
 
 module.exports = DB

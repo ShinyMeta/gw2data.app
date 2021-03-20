@@ -5,6 +5,10 @@ const router = express.Router();
 const passport = require('passport')
 require('../../db/passport.js')
 // const RedisStore = require('connect-redis')(session)
+const DB = require('../../db/mysqlDB')
+
+const jwt = require('jwt-simple')
+const emailService = require('../../serverUtilities/emailService')
 
 
 
@@ -73,5 +77,51 @@ router
     else res.json(null)
   })
 
+  .post('/forgotPassword', (req, res, next) => {
+    const username = req.body.username
+    return DB('users')
+      .where('username', username)
+      .first()
+      .then((user) => {
+        const secret = "secretgw2data.app" + user.passhash + user.password_last_changed
+        const payload = {userId: user.id}
+        const token = jwt.encode(payload, secret)
+        const url = `https://gw2data.app/passwordReset/${user.id}/${token}`
+        return emailService.sendPasswordReset(user.email, url)
+        .then((result) => {
+          res.sendStatus(200)
+          console.log(token)
+        })
+      })
+      .catch((err) => {
+        res.sendStatus(200)
+      })
+
+  })
+
+  .post('/changePassword', (req, res, next) => {
+    const {userId, token, newPassword} = req.body
+    return DB.users.getFirst({id: userId})
+      .then((user) => {
+        const secret = "secretgw2data.app" + user.passhash + user.password_last_changed
+        try{
+          decode = jwt.decode(token, secret)
+        } catch(err) {
+          res.status(400).send({message: "This reset link is not valid.  Please request a new reset link"})
+          // console.error(err)
+          return
+        }
+        if (decode && decode.userId === userId) {
+          return DB.users.changePassword(userId, newPassword)
+            .then((userId) => {
+              res.status(200).send({userId})
+            })
+        }
+      })
+      .catch((err) => {
+        
+        console.error(err)
+      })
+  })
 
 

@@ -2,13 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AccountStateCompare from '@/views/AccountStateCompare.vue'
 
+import store from '../store'
+
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
     name: 'AccountStateCompare',
-    component: AccountStateCompare
+    component: AccountStateCompare,
+    meta: {requiresAuth: true},
   },
   {
     path: '/login',
@@ -19,24 +22,38 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '@/views/HomeLogin.vue')
   },
   {
+    path: '/passwordReset/:userId/:token',
+    name: 'Password Reset',
+    component: () => import('@/views/PasswordReset.vue'),
+  },
+  {
+    path: '/forgotPassword',
+    name: 'Forgot Password',
+    component: () => import('@/views/ForgotPassword.vue'),
+  },
+  {
     path: '/accountSettings',
     name: 'Account Settings',
-    component: () => import('@/views/AccountSettings.vue')
+    component: () => import('@/views/AccountSettings.vue'),
+    meta: {requiresAuth: true},
   },
   {
     path: '/saveNewDataRecord',
     name: 'Save New Data Record',
-    component: () => import('@/views/SaveNewDataRecord.vue')
+    component: () => import('@/views/SaveNewDataRecord.vue'),
+    meta: {requiresAuth: true},
   },
   {
     path: '/myDataRecords',
     name: 'My Data Records',
-    component: () => import('@/views/MyDataRecords.vue')
+    component: () => import('@/views/MyDataRecords.vue'),
+    meta: {requiresAuth: true},
   },
   {
     path: '/DataRecordDetail/:record_id',
     name: 'Data Record Detail',
-    component: () => import('@/views/DataRecordDetail.vue')
+    component: () => import('@/views/DataRecordDetail.vue'),
+    meta: {requiresAuth: true},
   },
 
   {
@@ -50,6 +67,31 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // console.log(store.state)
+    if (store.state.activeUser.user.username === null) {
+      return store.dispatch('getUserFromSession')
+      .then(() => {
+        if (store.state.activeUser.user.username) {
+          //also get apikeys
+          return store.dispatch('getApiKeysFromUser')
+            .then(next)
+        }
+      })
+      .catch((err) => {
+        //if user isn't set here, redirect to /login
+        console.error(err)
+        next("Login")
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
 })
 
 export default router

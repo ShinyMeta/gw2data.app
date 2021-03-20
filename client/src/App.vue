@@ -27,20 +27,20 @@ export default {
       'user'
     ])
   },
-  created() {
-    this.getUserFromSession()
-      .then(() => {
-        if (this.user.username) {
-          //also get apikeys
-          return this.getApiKeysFromUser()
-        }
-      })
-      .catch((err) => {
-        //if user isn't set here, redirect to /login
-        console.error(err)
-        this.$router.push('login')
-      })
-  }
+  // created() {
+  //   this.getUserFromSession()
+  //     .then(() => {
+  //       if (this.user.username) {
+  //         //also get apikeys
+  //         return this.getApiKeysFromUser()
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       //if user isn't set here, redirect to /login
+  //       console.error(err)
+  //       this.$router.push('login')
+  //     })
+  // }
 
 }
 </script>

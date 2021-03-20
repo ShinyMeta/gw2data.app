@@ -20,6 +20,10 @@
       </button>
       <span class="loginError" v-if="loginErrorMessage !== ''">{{loginErrorMessage}}</span>
     </form>
+
+    <div>
+      Forgot Password? <router-link to="/forgotPassword">Click here.</router-link>
+    </div>
   </div>
 </template>
 

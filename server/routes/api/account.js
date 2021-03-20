@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
-const DB = require('../../db/mysqlDB/mysqlDB.js')
+const DB = require('../../db/mysqlDB')
 const client = require('gw2api-client')
 const gw2api = client()
 

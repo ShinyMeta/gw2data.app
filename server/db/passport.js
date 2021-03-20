@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt-nodejs')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
-const DB = require('./mysqlDB/mysqlDB.js')
+const DB = require('./mysqlDB')
 
 
 //strategy gives you access to 'req.isAuthenticated()'

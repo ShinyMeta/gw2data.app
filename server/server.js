@@ -33,18 +33,7 @@ require('./serverConfig.js')[process.env.NODE_ENV || 'development'](app)
 //  PLACE TO RUN SCRIPT ON SERVER START
 ///////////////////////////////////////////////
 require('./db/mongoDB/index.js')(app)
-// const mongoose = require('mongoose')
 
-// mongoose.connect('mongodb://localhost/gw2data', {useNewUrlParser: true})
-// // .then(console.log)
-// .catch(console.error)
-// const db = mongoose.connection
-// db.on('error', console.error.bind(console, 'connection error:'))
-// db.once('open', function() {
-//   // we're connected!
-//   app.set('db', db); //
-//   //req.app.get('db').usercollection.find()
-// })
 
 
 
@@ -92,7 +81,7 @@ app.use(express.static('../client/dist'))
 
 
 
-app.use('/api', require('./server_routes/api.js'))
+app.use('/api', require('./routes/api.js'))
 
 
 

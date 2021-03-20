@@ -49,6 +49,11 @@ export default {
     ]),
     register() {
       this.registerErrorMessage = ''
+      this.email = this.email.trim()
+      if (!/^[^@]+@[^@]+\.[^@]+$/.test(this.email)) {
+        this.registerErrorMessage = 'Invalid Email'
+        return
+      }
       const credentials = {
         username: this.username,
         email: this.email,
