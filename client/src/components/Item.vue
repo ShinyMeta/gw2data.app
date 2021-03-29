@@ -34,6 +34,11 @@ name: "Item",
       type: Boolean,
       default: false
     }
+  },
+  methods: {
+    tooltipText() {
+      return ``
+    }
   }
 }
 </script>

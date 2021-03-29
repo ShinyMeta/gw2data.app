@@ -30,6 +30,8 @@ export default {
     fetchDataRecordWithDetails({commit}, record_id) {
       return axios.get(`/api/dataRecord/${record_id}`)
         .then((response) => {
+          response.data.start_time = new Date(response.data.start_time)
+          response.data.end_time = new Date(response.data.end_time)
           commit('setDataRecordWithDetails', response.data)
         })
         .catch((err) => {

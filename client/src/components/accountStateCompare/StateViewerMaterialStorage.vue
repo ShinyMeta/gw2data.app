@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1>Mats</h1>
-
+  <div class="StateViewerMaterialStorage">
     <div v-for="(category) in ( materialStorageDetails )"
       :key="category.id"
       >
@@ -45,6 +43,9 @@ name: "StateViewerMaterialStorage",
 </script>
 
 <style scoped>
+  .StateViewerMaterialStorage {
+    text-align: center
+  }
   .materialStorageSection {
     display: grid;
     justify-content: center;

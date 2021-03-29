@@ -25,6 +25,32 @@ export default {
   getters: {
     newDataRecord: state => state.newDataRecord,
     newDataRecordLines: state => state.newDataRecordLines,
+    newDataRecordLinesWithElementDetails: (state, getters, rootState, rootGetters) => {
+      const result = [...state.newDataRecordLines]
+      result.forEach(x => {
+        if (x.element_type === "Item") {
+          if (rootGetters.itemLookup[x.element_id]){
+            x.name = rootGetters.itemLookup[x.element_id].name
+            x.icon = rootGetters.itemLookup[x.element_id].icon 
+            x.type = rootGetters.itemLookup[x.element_id].type 
+          }
+          else {
+            x.name = 'Loading...'
+          }
+        }
+        if (x.element_type === "Currency") {
+          if (rootGetters.currencyLookup[x.element_id]){
+            x.name = rootGetters.currencyLookup[x.element_id].name 
+            x.icon = rootGetters.currencyLookup[x.element_id].icon 
+            x.type = "Currency"
+          }
+          else {
+            x.name = 'Loading...'
+          }
+        }
+      })
+      return result
+    }
 
   }, 
 

@@ -1,27 +1,67 @@
 <template>
   <div class="SaveNewDataRecord">
-    <form action="javascript:">
-      Description:<input type="text" v-model="description" />
-      <br />
-      Details:<textarea  v-model="details" />
-      <br />
-      Primary Tag:<input type="text" v-model="primary_tag">
-      <br />
-      Key Element:<select  v-model="keyElement">
-        <option v-for="(line, index) in newDataRecordLines"
-          :key="`lineoption_${index}`" 
-          :value="index"
-          >{{line.element_type}}-{{getDetailForLineElement(line.element_type,line.element_id).name}}</option>
-      </select>
-      <br />
-      <button @click="submitRecord">Submit Record</button>
-    </form>
+      
+      
+
+
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="description"
+              label="Description"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-textarea
+              v-model="details"
+              label="Details"
+              auto-grow
+            ></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="primary_tag"
+              label="Primary Tag"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <key-element-selector
+              v-model="keyElement"
+              :elements="newDataRecordLinesWithElementDetails"
+              :search="keyElementSearch"
+            />
+          </v-col>
+          <v-col cols=4>
+            <v-text-field
+              v-model="keyElementSearch"
+              label="Filter Key Element Selector"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn @click="submitRecord">Submit Record</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      
+      
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import KeyElementSelector from '../components/SaveNewDataRecord/KeyElementSelector.vue'
 export default {
+  components: { KeyElementSelector },
   name: 'SaveNewDataRecord',
 
   data: () => {
@@ -29,7 +69,8 @@ export default {
       description: '',
       details: '',
       primary_tag: '',
-      keyElement: -1,
+      keyElement: null,
+      keyElementSearch:''
     }
   },
   methods: {
@@ -41,8 +82,8 @@ export default {
         description: this.description,
         details: this.details,
         primary_tag: this.primary_tag,
-        primary_element_id: this.newDataRecordLines[this.keyElement].element_id,
-        primary_element_type: this.newDataRecordLines[this.keyElement].element_type,
+        primary_element_id: this.keyElement.element_id,
+        primary_element_type: this.keyElement.element_type,
       })
       .then(() => {
         const newRecord = this.newDataRecord
@@ -78,6 +119,7 @@ export default {
     ...mapGetters('newDataRecord', [
       'newDataRecord',
       'newDataRecordLines',
+      'newDataRecordLinesWithElementDetails',
     ]),
   }
 

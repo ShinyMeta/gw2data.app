@@ -1,36 +1,33 @@
 <template>
-  <div class="LoginForm">
-    <form>
-      <label>Username:
-      <input type="text" 
-        v-model="username"
-        />
-      </label>
-      <br>
-      <label>Password:
-      <input type="password" 
-        v-model="password"
-        />
-      </label>
-      <br>
-      <button type="button"
-        @click="login"
-        >
-        Login
-      </button>
-      <span class="loginError" v-if="loginErrorMessage !== ''">{{loginErrorMessage}}</span>
-    </form>
+  <v-card class="LoginForm pa-10" >
 
-    <div>
-      Forgot Password? <router-link to="/forgotPassword">Click here.</router-link>
-    </div>
-  </div>
+    <v-text-field label="Username"
+      v-model="username"
+      
+      />
+    <v-text-field label="Password" type="password" 
+      v-model="password"
+      />
+    <v-btn block
+      @click="login"
+      >
+      Login
+    </v-btn>
+    <span class="loginError" v-if="loginErrorMessage !== ''">{{loginErrorMessage}}</span>
+    
+
+    <v-card-text>
+      <forgot-password-button />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import ForgotPasswordButton from './ForgotPasswordButton.vue'
 
 export default {
+  components: { ForgotPasswordButton },
   name: 'LoginForm',
   // components: {},
   data() {

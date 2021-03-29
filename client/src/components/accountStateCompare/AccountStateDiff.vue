@@ -1,44 +1,32 @@
 <template>
 <div class="accountStateDiff">
-  <button @click="saveRecord">Save Record</button>
-  <div id="diffCurrencies">
-    <Currency v-for="(currency) in currDiffs" 
-      :key="currency.id" 
-      :imageUrl="currencyLookup[currency.id].icon"
-      :name="currencyLookup[currency.id].name"
-      :id="currency.id"
-      :description="currencyLookup[currency.id].description"
-      :quantity="currency.diffCount"
-      />
-  </div>
-  <div id="diffItems">
-    <Item class="item" v-for="(diffItem, key, index) in itemDiffs"
-      :key="`diffItem_${key}`"
-      :imageUrl="diffItem&&itemLookup[diffItem.id]?itemLookup[diffItem.id].icon:undefined"
-      :name="diffItem&&itemLookup[diffItem.id]?itemLookup[diffItem.id].name:undefined"
-      :id="diffItem?diffItem.id:undefined"
-      :description="diffItem&&itemLookup[diffItem.id]?sourceDetailString(diffItem.beforeSources,diffItem.afterSources):undefined"
-      :quantity="diffItem?diffItem.diffCount:undefined"
-      :grid-area="`${Math.floor(index/10)+1}/${index%10+1}/span 1/span 1`"
-      />
-  </div>
+  <!-- <v-btn @click="saveRecord">Save Record</v-btn> -->
+
+  <difference-table 
+    @saveRecord="saveRecord"
+    :dataRows="linesForDataRecord"
+    description="diffs"
+  />
 </div>
 </template>
 
 <script>
-import Currency from '@/components/Currency'
-import Item from "@/components/Item"
+// import Currency from '@/components/Currency'
+// import Item from "@/components/Item"
 import {mapGetters, mapActions} from 'vuex'
+import DifferenceTable from './DifferenceTable.vue'
 
 export default {
   name: "AccountStateDiff",
   components:{
-    Item,
-    Currency
+    // Item,
+    // Currency,
+    DifferenceTable
   },
   props: {  
   },
-  data: () => {
+ 
+    data: () => {
     return {
       diffCurrencies: []
     }
@@ -58,26 +46,8 @@ export default {
       this.updateNewDataRecord(newDataRecord)
 
       //now also get the lines into 
-      let lines = []
-      this.currDiffs.forEach((currDiff) => {
-        const newLine = {
-          quantity: currDiff.diffCount,
-          element_id: currDiff.id,
-          element_type: 'Currency',
-        }
-        lines.push(newLine)
-      })
-
-      Object.keys(this.itemDiffs).forEach((item_id) => {
-        const newLine = {
-          quantity: this.itemDiffs[item_id].diffCount,
-          element_id: this.itemDiffs[item_id].id,
-          element_type: 'Item',
-          upgrades: this.itemDiffs[item_id].upgrades.join(',')
-        }
-        lines.push(newLine)
-      })
-      this.setNewDataRecordLines(lines)
+      // let lines = this.linesForDataRecord
+      this.setNewDataRecordLines(this.linesForDataRecord)
 
       this.$router.push('saveNewDataRecord')
     },
@@ -164,6 +134,28 @@ export default {
     },
     currDiffs() {
       return this.calculateCurrencyTotalDiffs(this.accountStateFromSave.wallet, this.accountStateFromApi.wallet)
+    },
+    linesForDataRecord() {
+      let lines = []
+      this.currDiffs.forEach((currDiff) => {
+        const newLine = {
+          quantity: currDiff.diffCount,
+          element_id: currDiff.id,
+          element_type: 'Currency',
+        }
+        lines.push(newLine)
+      })
+
+      Object.keys(this.itemDiffs).forEach((item_id) => {
+        const newLine = {
+          quantity: this.itemDiffs[item_id].diffCount,
+          element_id: this.itemDiffs[item_id].id,
+          element_type: 'Item',
+          upgrades: this.itemDiffs[item_id].upgrades.join(',')
+        }
+        lines.push(newLine)
+      })
+      return lines
     }
   }
 
@@ -171,9 +163,9 @@ export default {
 </script>
 
 <style>
-  #diffItems{
+  /* #diffItems{
     display: grid;
     justify-content: center;
     grid-template: repeat(auto-fill, 64px) / repeat(10 , 64px);
-  }
+  } */
 </style>

@@ -1,32 +1,23 @@
 <template>
-  <div class="RegisterForm">
+  <v-card class="RegisterForm pa-10">
     <form>
-      <label>Username:
-      <input type="text" 
+      <v-text-field label="Username"
         v-model="username"
         />
-      </label>
-      <br>
-      <label>Email:
-      <input type="text" 
+      <v-text-field label="Email"
         v-model="email"
         />
-      </label>
-      <br>
-      <label>Password:
-      <input type="password" 
+      <v-text-field label="Password" type="password" 
         v-model="password"
         />
-      </label>
-      <br>
-      <button type="button"
+      <v-btn block
         @click="register"
         >
         Register
-      </button>
+      </v-btn>
       <span class="registerError" v-if="registerErrorMessage !== ''">{{registerErrorMessage}}</span>
     </form>
-  </div>
+  </v-card>
 </template>
 
 <script>

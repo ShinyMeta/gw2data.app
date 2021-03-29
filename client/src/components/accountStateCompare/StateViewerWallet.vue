@@ -1,8 +1,6 @@
 <template>
-  <div>
-
-    <h1>Wallet</h1>
-    <Currency v-for="(currency) in wallet" 
+  <div class="StateViewerWallet">
+    <Currency v-for="(currency) in sortedWallet" 
       :key="currency.id" 
       :imageUrl="currencyLookup[currency.id].icon"
       :name="currencyLookup[currency.id].name"
@@ -26,10 +24,22 @@ export default {
     wallet: Array,
     currencyLookup: Object,
 
+  },
+  computed: {
+    sortedWallet()  {
+      const sortedWallet = [...this.wallet]
+      sortedWallet.sort((a,b) => {
+        return this.currencyLookup[a.id].order - this.currencyLookup[b.id].order
+      })
+      return sortedWallet
+    }
   }
 }
 </script>
 
 <style>
+.StateViewerWallet {
+  text-align: center;
+}
 
 </style>

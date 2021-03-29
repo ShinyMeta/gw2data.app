@@ -1,9 +1,21 @@
 <template>
-  <div id="app">
+
+  <v-app id="app">
+    
+    <nav-bar-top />
+
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
+
+
+
+  <!-- <v-app id="app">
     <nav-bar-top v-if="user.username !== null"/>
     <h1 v-if="user.username === null">Login or Register</h1>
     <router-view/>
-  </div>
+  </v-app> -->
 </template>
 
 
@@ -14,6 +26,11 @@ import NavBarTop from '@/components/navBarTop.vue'
 export default {
   components: {
     NavBarTop
+  },
+  data() {
+    return {
+      drawer: null
+    }
   },
   methods: {
     ...mapActions([
@@ -46,12 +63,13 @@ export default {
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
+} */
+
 
 </style>

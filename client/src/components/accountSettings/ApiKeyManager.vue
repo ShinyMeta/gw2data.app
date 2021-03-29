@@ -1,50 +1,80 @@
 <template>
-<!-- list of api keys -->
 <div class="ApiKeyManager">
-  <api-key-row v-for="(apikey, index) in apikeys"
-    :key="`apikey_${index}`" 
-    :apikey="apikey"
-    />
-    <!-- D2B5389F-F40A-4547-9D2C-FAC66DACEB63374FC165-8917-4A24-9DB0-74602CBF4253 -->
-    <!-- CFBA11E8-CDAD-144E-82DF-1F3E8E1D7D855C321BCE-88F2-46D5-A27F-0DA6FC88F39A -->
-  <input type="text" v-model="newApiKey">
-  <button @click="submitAddKey">Add Key</button>
-  <div class="newApiKeyError" v-if="newApiKeyErrorMessage !== ''">{{newApiKeyErrorMessage}}</div>
+
+  <new-api-key-button />
+ 
+
+  <v-data-table
+    :headers="headers"
+    :items="apikeys"
+    :items-per-page="25"
+    :footer-props="{
+        itemsPerPageOptions:[10,25,50,-1]
+      }"
+  > 
+    <template v-slot:[`item.actions`]="{ item }">
+      <!-- <v-icon small class="mr-2" > 
+        mdi-pencil </v-icon> -->
+      <v-icon small @click="deleteKey(item)" > 
+        mdi-delete </v-icon>
+    </template>
+  </v-data-table>
 </div>
 
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ApiKeyRow from './ApiKeyRow.vue'
+import NewApiKeyButton from './NewApiKeyButton.vue'
+// import ApiKeyRow from './ApiKeyRow.vue'
 
 export default {
-  components: { ApiKeyRow },
+  components: { 
+    NewApiKeyButton
+    // ApiKeyRow 
+  },
   name: 'ApiKeyManager',
   data() {
     return {
-      newApiKey: '',
-      newApiKeyErrorMessage: '',
+      // newApiKey: '',
+      // newApiKeyNickname: '',
+      // newApiKeyErrorMessage: '',
+      headers: [
+        { text: 'Nickname', value: 'nickname', groupable: false },
+        { text: 'Account Name', value: 'account_name', groupable: false }, 
+        { text: 'API Key', value: 'apikey', groupable: false },
+        { text: 'Actions', value: 'actions', sortable: false }
+      ],
     }
   },
   methods: {
     ...mapActions([
-      'addApiKey',
-      // 'deleteApiKey'
+      // 'addApiKey',
+      'deleteApiKey'
     ]),
-    submitAddKey() {
-      this.newApiKeyErrorMessage = ''
+    // submitAddKey() {
+    //   this.newApiKeyErrorMessage = ''
 
-      this.$axios.post('/api/account/apikey', {apikey: this.newApiKey})
+    //   this.$axios.post('/api/account/apikey', { apikey: this.newApiKey, nickname: this.newApiKeyNickname })
+    //     .then((response) => {
+    //       // console.log(response)
+    //       this.addApiKey(response.data)
+    //     })
+    //     .catch((err) => {
+    //       //set error message 
+    //       this.newApiKeyErrorMessage = err.response.data
+    //     })
+    // },
+    deleteKey(apikey) {
+      this.$axios.delete('/api/account/apikey', {data: {apikey: apikey.apikey}})
         .then((response) => {
-          // console.log(response)
-          this.addApiKey(response.data)
+          console.log(response)
+          this.deleteApiKey(apikey.apikey)
         })
         .catch((err) => {
-          //set error message 
-          this.newApiKeyErrorMessage = err.response.data
+          console.error(err)
         })
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -57,7 +87,4 @@ export default {
 
 <style>
 
-.newApiKeyError {
-  color:red
-}
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Bank</h1>
     <div id="bankItems" 
     :style="`grid-template: repeat(${bank.length/10}, 64px) / repeat(10 , 64px)`">
       <Item class="item" v-for="(bankItem,index) in bank"

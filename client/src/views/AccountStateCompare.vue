@@ -1,64 +1,110 @@
 <template>
   <div class="AccountStateCompare">
-    <iframe hidden=true name="dummyFormSubmitTargetFrame"></iframe>
-    <br/>
-    <!-- <form> -->
-    <form action="javascript:" target="dummyFormSubmitTargetFrame">
-      <!-- <span> Select API Key: </span> -->
-      <!-- <input type="text" 
-        v-model="apikey"
-        pattern="[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{20}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}"
-        id="apikeyInput"
-        ref="apikeyInput"
-        /> -->
-      <select v-model="selectedApiKeyOption" :disabled="selectedApiKey !== null">
-        <option value="default" disabled>Select an API Key</option>
-        <option v-for="(apikey, index) in apikeys"
-          :key="`apikey_${index}`" 
-          :value="apikey.apikey"
-          >{{apikey.account_name}}-{{apikey.apikey}}</option>
-      </select>
-      <button @click="useSelectedApiKey" v-if="selectedApiKey === null"> Use this API Key </button>
-      <button @click="useDifferentApiKey" v-if="selectedApiKey !== null"> Use Different API Key</button>
-        <br/>
-      <button type="submit" @click="fetchBothStates" v-if="selectedApiKey !== null"> Refresh Account States </button>
-        <br/>
-      <button type="submit" @click="saveState" v-if="accountStateFromApi.wallet.length > 0"> Copy Live State to Save </button>
-        <!-- <br/>
-      <button type="submit" @click="loadState"> Load Account State </button> -->
-    </form>
-    <div>
-      <label><input type="radio" v-model="statesOrDiff" value="states" id="states"/>
-        Live and Saved State </label>
-      <label><input type="radio" v-model="statesOrDiff" value="diff" id="diff"/>
-        Differences </label>
-    </div>
+    
+    <v-container>
+      <v-row>
+        <v-col>
+          <api-key-select @change="clearAccountStates"/>
+        </v-col>
+        <v-col>
+          <v-btn type="button" @click="fetchBothStates" v-if="selectedApiKey !== null"> Load/Refresh Account States </v-btn>
+          <!-- <v-btn type="button" @click="saveState" v-if="accountStateFromApi.wallet.length > 0"> Copy Live State to Save </v-btn> -->
+          <v-dialog
+            v-if="accountStateFromApi.wallet.length > 0"
+            v-model="confirmSaveStateDialog"
+            width="500"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs"
+                v-on="on"
+              >
+                Copy Live State to Save 
+              </v-btn>
+              <!-- <v-btn
+                color="red lighten-2"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Click Me
+              </v-btn> -->
+            </template>
 
-    <div id="stateViewers" v-if="statesOrDiff==='states'" >
-      <div>
-        <h1>Live State From API</h1>
-        <StateViewer
-          :accountState="accountStateFromApi"
-          :currencyLookup="currencyLookup"
-          :itemLookup="itemLookup"
-          :materialStorageDetails="materialStorageDetails"
-          />
-      </div>
-      <div>
-        <h1>Saved State</h1>
+            <v-card>
+              <v-card-title>
+                Confirm
+              </v-card-title>
+
+              <v-card-text>
+                This will over-write the currently saved state. OK?
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="primary"
+                  text
+                  @click="saveState"
+                >
+                  Yes
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  text
+                  @click="confirmSaveStateDialog = false"
+                >
+                  No
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-col>
+      </v-row>
+    </v-container>
+    
+
+    <v-tabs
+      v-model="statesOrDiff"
+      centered
+    >
+      <v-tab :href="'#tab-saved'" >
+        Saved State
+      </v-tab>
+      <v-tab :href="'#tab-live'" >
+        Live State
+      </v-tab>
+      <v-tab :href="'#tab-diff'" >
+        Differences
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="statesOrDiff">
+      <v-tab-item :value="'tab-saved'" >
         <StateViewer
           :accountState="accountStateFromSave"
           :currencyLookup="currencyLookup"
           :itemLookup="itemLookup"
           :materialStorageDetails="materialStorageDetails"
           />
-      </div>
-    </div>
-    <div id="diffViewer" v-if="statesOrDiff==='diff'">
-      <AccountStateDiff
-        v-if="accountStateFromApi.wallet.length > 0 && accountStateFromSave.wallet.length > 0" 
-        />
-    </div>
+      </v-tab-item>
+      <v-tab-item :value="'tab-live'">
+        <StateViewer
+          :accountState="accountStateFromApi"
+          :currencyLookup="currencyLookup"
+          :itemLookup="itemLookup"
+          :materialStorageDetails="materialStorageDetails"
+          />
+      </v-tab-item>
+      <v-tab-item :value="'tab-diff'" >
+        <AccountStateDiff
+          v-if="accountStateFromApi.wallet.length > 0 && accountStateFromSave.wallet.length > 0" 
+          />
+      </v-tab-item>
+    </v-tabs-items>
+
 
   </div>
 </template>
@@ -70,6 +116,7 @@ import StateViewer from '@/components/accountStateCompare/StateViewer.vue'
 import AccountStateDiff from '@/components/accountStateCompare/AccountStateDiff.vue'
 // const client = require('gw2api-client')
 import {mapGetters, mapActions} from 'vuex'
+import ApiKeySelect from '../components/accountStateCompare/ApiKeySelect.vue'
 
 // Get an instance of an API client
 
@@ -78,14 +125,15 @@ export default {
   components: {
     StateViewer,
     AccountStateDiff,
+    ApiKeySelect,
     // AccountControls,
   },
   data() {
     return {
-      // api: client(),
+      confirmSaveStateDialog: false,
       selectedApiKeyOption: 'default',
       apikeyAuthenticated: false,
-      statesOrDiff: 'states'
+      statesOrDiff: 'tab-live'
     }
   },
   methods:{
@@ -108,6 +156,7 @@ export default {
       this.clearAccountStates()
     },
     saveState() {
+      this.confirmSaveStateDialog = false
 
       this.$axios.post(`/api/accountState/${this.selectedApiKey.apikey}`, this.accountStateFromApi)
         .then((result) => {
@@ -162,9 +211,9 @@ export default {
 </script>
 
 <style scoped>
-#stateViewers {
+/* #stateViewers {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-}
+} */
 </style>

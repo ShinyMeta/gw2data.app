@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <details>
-      <summary>{{character.name}} - {{filledInventorySlots}}/{{inventorySize}}</summary>
+  <v-expansion-panel>
+    <v-expansion-panel-header>
+      {{character.name}} - {{filledInventorySlots}}/{{inventorySize}}
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
       <div class="inventorySection">
         <Item v-for="(item, index) in itemsInInventory"
           :key="`${character.name}_${index}`"
@@ -13,10 +15,20 @@
           :grid-area="`${Math.floor(index/10)+1}/${index%10+1}/span 1/span 1`"
           />
       </div>
-    </details>
-  </div>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 
-</template>
+
+  <!-- <div>
+    
+
+    <details>
+      <summary>{{character.name}} - {{filledInventorySlots}}/{{inventorySize}}</summary> -->
+      
+    <!-- </details>
+  </div>-->
+
+</template> 
 
 <script>
 import Item from "@/components/Item"

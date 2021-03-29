@@ -1,43 +1,68 @@
 <template>
   <div class="StateViewer">
-    <div>
-      <label><input type="radio" v-model="selectedTab" value="wallet" id="wallet"/>
-        Wallet </label>
-      <label><input type="radio" v-model="selectedTab" value="bank" id="bank"/>
-        Bank </label>
-      <label><input type="radio" v-model="selectedTab" value="materialStorage" id="materialStorage"/>
-        Material Storage </label>
-      <label><input type="radio" v-model="selectedTab" value="sharedInventory" id="sharedInventory"/>
-        Shared Inventory </label>
-      <label><input type="radio" v-model="selectedTab" value="characters" id="characters"/>
-        Characters </label>
-    </div>
+
+    <v-tabs
+      v-model="selectedTab"
+      centered
+    >
+      <v-tab :href="'#wallet'" >
+        Wallet
+      </v-tab>
+      <v-tab :href="'#bank'" >
+        Bank
+      </v-tab>
+      <v-tab :href="'#materialStorage'" >
+        Material Storage
+      </v-tab>
+      <v-tab :href="'#sharedInventory'" >
+        Shared Inventory
+      </v-tab>
+      <v-tab :href="'#characters'" >
+        Characters
+      </v-tab>
+
+    </v-tabs>
 
 
+    <v-tabs-items v-model="selectedTab">
+      <v-tab-item :value="'wallet'">
+        <StateViewerWallet v-if="selectedTab==='wallet'"
+          :wallet="accountState.wallet" 
+          :currencyLookup="currencyLookup"
+          />
+      </v-tab-item>
+      <v-tab-item :value="'bank'" >
+        <StateViewerBank v-if="selectedTab==='bank'"
+          :bank="accountState.bank" 
+          :itemLookup="itemLookup"
+          />
+      </v-tab-item>
+      <v-tab-item :value="'materialStorage'" >
+        <StateViewerMaterialStorage v-if="selectedTab==='materialStorage'"
+          :materialStorage="accountState.materialStorage" 
+          :itemLookup="itemLookup"
+          :materialStorageDetails="materialStorageDetails"
+          />
+      </v-tab-item>
+      <v-tab-item :value="'sharedInventory'" >
+        <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"
+          :sharedInventory="accountState.sharedInventory" 
+          :itemLookup="itemLookup"
+          />
+      </v-tab-item>
+      <v-tab-item :value="'characters'" >
+        <StateViewerAllCharacters v-if="selectedTab==='characters'"
+          :characters="accountState.characters" 
+          :itemLookup="itemLookup"
+          />
+      </v-tab-item>
+    </v-tabs-items>
 
 
-
-    <StateViewerWallet v-if="selectedTab==='wallet'" 
-      :wallet="accountState.wallet" 
-      :currencyLookup="currencyLookup"
-      />
-    <StateViewerBank v-if="selectedTab==='bank'"
-      :bank="accountState.bank" 
-      :itemLookup="itemLookup"
-      />
-    <StateViewerMaterialStorage v-if="selectedTab==='materialStorage'"
-      :materialStorage="accountState.materialStorage" 
-      :itemLookup="itemLookup"
-      :materialStorageDetails="materialStorageDetails"
-      />
-    <StateViewerSharedInventory v-if="selectedTab==='sharedInventory'"
-      :sharedInventory="accountState.sharedInventory" 
-      :itemLookup="itemLookup"
-      />
-    <StateViewerAllCharacters v-if="selectedTab==='characters'"
-      :characters="accountState.characters" 
-      :itemLookup="itemLookup"
-      />
+    
+    
+    
+    
 
   </div>
 </template>

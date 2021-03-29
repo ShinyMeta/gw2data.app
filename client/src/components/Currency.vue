@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="currency">
     <img class="currencyIcon"
       :src="imageUrl" 
       :alt="name" 
@@ -38,7 +38,11 @@ name: "currency",
 </script>
 
 <style scoped>
-  .currencyIcon {
-    height: 30px;
-  }
+.currency {
+  text-align: center;
+}
+
+.currencyIcon {
+  height: 30px;
+}
 </style>

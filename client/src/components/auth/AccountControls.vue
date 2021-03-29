@@ -1,8 +1,15 @@
 <template>
 <div class="AccountControls">
-  <span>Hi, {{user.username}}</span>
-  <button @click="logout">Logout</button>
-  <router-link to="/accountSettings">Account Settings</router-link> 
+  
+  <!-- <span>Hi, {{user.username}}</span> -->
+  <v-btn @click="logout">
+    <v-icon left>mdi-logout</v-icon>
+    Logout
+  </v-btn>
+  <v-btn to="/accountSettings">
+    <v-icon left>mdi-account-cog</v-icon>
+    Account Settings
+  </v-btn> 
 </div>
 </template>
 
