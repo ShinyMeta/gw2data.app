@@ -1,11 +1,12 @@
 <template>
   <div class="ApiKeyRow">
     <!-- account name -->
-    <div class="apikeyname">{{apikey.account_name}}</div>
+    <div class="accountName">{{apikey.account_name}}</div>
     <!-- api key -->
+    <div class="nickname">{{apikey.nickname}}</div>
     <div class="apikey">{{apikey.apikey}}</div>
-    <!-- delete button -->
-    <button @click="deleteKey">Delete</button>
+    <!-- delete v-btn -->
+    <v-btn @click="deleteKey">Delete</v-btn>
   </div>
 </template>
 

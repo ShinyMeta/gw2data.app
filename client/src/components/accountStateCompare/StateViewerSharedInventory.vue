@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Shared Inventory</h1>
     <div id="sharedInventoryItems" 
     :style="`grid-template: repeat(${sharedInventory.length/10}, 64px) / repeat(10 , 64px)`">
       <Item class="item" v-for="(sharedInventoryItem,index) in sharedInventory"

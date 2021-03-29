@@ -45,6 +45,12 @@ router
             return gw2api.authenticate(req.body.apikey).account().get()
               .then((accountInfo) => {
                 apikey.account_name = accountInfo.name
+                if (req.body.nickname) {
+                  apikey.nickname = req.body.nickname
+                }
+                else {
+                  apikey.nickname = accountInfo.name
+                }
                 return DB('apikeys')
                   .insert(apikey)
                   .then(() => {

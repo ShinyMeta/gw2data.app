@@ -61,6 +61,7 @@ export default {
             console.log(response.data)
             // window.alert('got apikeys')
             commit('setApiKeys', response.data)
+            commit('setSelectedApiKey', response.data[0])
             return true
           }
           else {
@@ -83,6 +84,10 @@ export default {
     },
 
     selectApiKey({commit, state}, apikey) {
+      if (apikey === null) {
+        commit('deselectApiKey')
+        return 
+      }
       if (apikey.apikey) {// can pass in apikey object or string
         apikey = apikey.apikey
       }

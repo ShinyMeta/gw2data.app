@@ -1,19 +1,43 @@
 <template>
   <div>
-    <h1>Characters</h1>
+    <!-- <input type="text" v-model="filterString" /> -->
 
-    <input type="text" v-model="filterString" />
-    <select v-model="sortOrder">
-      <option value="Created Date">Created Date</option>
-      <option value="Last Played">Last Played</option>
-      <option value="Alpha">Alpha</option>
-    </select>
+    <v-container>
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="filterString"
+            label="Filter Characters"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-select 
+            v-model="sortOrder"
+            :items="charSortTypes"
+            item-text="text"
+            item-value="value"
 
-    <StateViewerCharacter v-for="(character) in sortedAndFilteredCharacters"
-      :key="character.name"
-      :character="character"
-      :itemLookup="itemLookup"
-      />
+            label="Character Sort Order"      
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-expansion-panels>
+            <StateViewerCharacter 
+              v-for="(character) in sortedAndFilteredCharacters"
+              :key="character.name"
+              :character="character"
+              :itemLookup="itemLookup"
+              />
+          </v-expansion-panels>
+        </v-col>
+      </v-row>
+    </v-container>
+
+
+
+
   </div>
 </template>
 
@@ -33,7 +57,12 @@ name: "StateViewerAllCharacters",
     return {
       filterString: '',
       sortOrder:'Created Date',
-      sortDirection: 'LowToHigh'
+      sortDirection: 'LowToHigh',
+      charSortTypes: [
+        { text: 'Created Date', value: 'Created Date'},
+        { text: 'Last Played', value: 'Last Played'},
+        { text: 'Alphabetical', value: 'Alphabetical'},
+      ]
     }
   },
   computed:{
@@ -52,7 +81,7 @@ name: "StateViewerAllCharacters",
       }
       switch(sortOrder) {
         case 'Last Played': return result
-        case 'Alpha': return result.sort((a,b) => {
+        case 'Alphabetical': return result.sort((a,b) => {
           if (a.name < b.name) return -1
           if (a.name > b.name) return 1
           return 0

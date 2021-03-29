@@ -4,11 +4,11 @@
     <input type="password"
       v-model="newPassword"
       />
-    <button type="button"
+    <v-btn
       @click="submitPasswordChange"
       >
       Change Password
-    </button>
+    </v-btn>
     <br />
     <span class="statusMessage" v-if="statusMessage !== ''">{{statusMessage}}</span>
   </div>

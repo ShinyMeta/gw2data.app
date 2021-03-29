@@ -27,11 +27,6 @@ Vue.use(VueRouter)
     component: () => import('@/views/PasswordReset.vue'),
   },
   {
-    path: '/forgotPassword',
-    name: 'Forgot Password',
-    component: () => import('@/views/ForgotPassword.vue'),
-  },
-  {
     path: '/accountSettings',
     name: 'Account Settings',
     component: () => import('@/views/AccountSettings.vue'),

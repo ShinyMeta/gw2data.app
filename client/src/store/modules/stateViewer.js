@@ -9,9 +9,9 @@ export default {
     apiKey:'',
     accountStateFromApi: AccountState(),
     accountStateFromSave: AccountState(),
-    currencyLookup:{},
-    itemLookup:{},
-    materialStorageDetails:[]
+    // currencyLookup:{},
+    // itemLookup:{},
+    // materialStorageDetails:[]
   }, 
 
 
@@ -21,9 +21,9 @@ export default {
     accountStateFromSave: state => state.accountStateFromSave,
     itemTotalsFromApi: state => getItemTotalsFromAccountState(state.accountStateFromApi),
     itemTotalsFromSave: state => getItemTotalsFromAccountState(state.accountStateFromSave),
-    itemLookup: state => state.itemLookup,
-    currencyLookup: state => state.currencyLookup,
-    materialStorageDetails: state => state.materialStorageDetails,
+    // itemLookup: state => state.itemLookup,
+    // currencyLookup: state => state.currencyLookup,
+    // materialStorageDetails: state => state.materialStorageDetails,
 
   }, 
 
@@ -88,26 +88,26 @@ export default {
       return dispatch('extractItemIdsFromAccountStateforLookup', accountStateFromSave)
     },
 
-    addItemsToLookupFromApi({commit}, ids){
-      return fetchItemsForLookup(ids)
-        .then((items) => {
-          commit('addItemsToLookup', items)
-        })
-    },
+    // addItemsToLookupFromApi({commit}, ids){
+    //   return fetchItemsForLookup(ids)
+    //     .then((items) => {
+    //       commit('addItemsToLookup', items)
+    //     })
+    // },
 
-    loadCurrencyLookupFromApi({commit}){
-      return fetchCurrenciesForLookup()
-        .then((currencies) => {
-          commit('setCurrencyLookup', currencies)
-        })
-    },
+    // loadCurrencyLookupFromApi({commit}){
+    //   return fetchCurrenciesForLookup()
+    //     .then((currencies) => {
+    //       commit('setCurrencyLookup', currencies)
+    //     })
+    // },
 
-    loadMaterialStorageDetailsFromApi({commit}){
-      return fetchMaterialStorageDetails()
-        .then((materialStorageDetails) => {
-          commit('setMaterialStorageDetails', materialStorageDetails)
-        })
-    },
+    // loadMaterialStorageDetailsFromApi({commit}){
+    //   return fetchMaterialStorageDetails()
+    //     .then((materialStorageDetails) => {
+    //       commit('setMaterialStorageDetails', materialStorageDetails)
+    //     })
+    // },
 
     extractItemIdsFromAccountStateforLookup({dispatch, state}, accountState){
       let itemIDSet = new Set()
@@ -116,7 +116,11 @@ export default {
       }
       //Bank
       accountState.bank.forEach((bankSlot) => {
-        if (bankSlot) { itemIDSet.add(bankSlot.id) }
+        if (bankSlot) { 
+          itemIDSet.add(bankSlot.id) 
+          if (bankSlot.upgrades)  {  bankSlot.upgrades.forEach(x => itemIDSet.add(x)) }
+          if (bankSlot.infusions) { bankSlot.infusions.forEach(x => itemIDSet.add(x)) }
+        }
       })
       //Material Storage
       accountState.materialStorage.raw.forEach((material) => {
@@ -124,11 +128,17 @@ export default {
       })
       //Shared Inventory
       accountState.sharedInventory.forEach((sharedSlot) => {
-        if (sharedSlot) { itemIDSet.add(sharedSlot.id) }
+        if (sharedSlot) { 
+          itemIDSet.add(sharedSlot.id) 
+          if (sharedSlot.upgrades)  {  sharedSlot.upgrades.forEach(x => itemIDSet.add(x)) }
+          if (sharedSlot.infusions) { sharedSlot.infusions.forEach(x => itemIDSet.add(x)) }
+        }
       })
       //character inventories
       forEachItemInCharactersInventory(accountState.characters, (item) => {
         itemIDSet.add(item.id)
+        if (item.upgrades)  {  item.upgrades.forEach(x => itemIDSet.add(x)) }
+        if (item.infusions) { item.infusions.forEach(x => itemIDSet.add(x)) }
       })
       return dispatch('addItemsToLookupFromApi', Array.from(itemIDSet))
     },
@@ -158,15 +168,15 @@ export default {
       state.accountStateFromSave = AccountState()
     },
 
-    addItemsToLookup(state, newItems) {
-      state.itemLookup = Object.assign({}, state.itemLookup, newItems)
-    },
-    setCurrencyLookup(state, currencyLookup) {
-      state.currencyLookup = currencyLookup
-    },
-    setMaterialStorageDetails(state, materialStorageDetails){
-      state.materialStorageDetails = materialStorageDetails
-    }
+    // addItemsToLookup(state, newItems) {
+    //   state.itemLookup = Object.assign({}, state.itemLookup, newItems)
+    // },
+    // setCurrencyLookup(state, currencyLookup) {
+    //   state.currencyLookup = currencyLookup
+    // },
+    // setMaterialStorageDetails(state, materialStorageDetails){
+    //   state.materialStorageDetails = materialStorageDetails
+    // }
 
   }
 }
@@ -177,31 +187,31 @@ export default {
 
 
 
-function fetchCurrenciesForLookup(){
-  return api.currencies().all().then((currencies) => {
-    let newCurrencies = {}
-    currencies.forEach((currency) => {
-      newCurrencies[currency.id] = currency
-    })
-    return newCurrencies
-  })
-}
-function fetchMaterialStorageDetails(){
-  return api.materials().all().then((materialStorageDetails) => {
-    materialStorageDetails.sort((a, b) => a.order - b.order)
-    return  materialStorageDetails
-  })
-}
-function fetchItemsForLookup(ids) {
-  // console.log(ids)
-  return api.items().many(ids).then((items) => {
-    let newItems = {}
-    items.forEach((item) => {
-      newItems[item.id] = item
-    })
-    return newItems
-  })
-}
+// function fetchCurrenciesForLookup(){
+//   return api.currencies().all().then((currencies) => {
+//     let newCurrencies = {}
+//     currencies.forEach((currency) => {
+//       newCurrencies[currency.id] = currency
+//     })
+//     return newCurrencies
+//   })
+// }
+// function fetchMaterialStorageDetails(){
+//   return api.materials().all().then((materialStorageDetails) => {
+//     materialStorageDetails.sort((a, b) => a.order - b.order)
+//     return  materialStorageDetails
+//   })
+// }
+// function fetchItemsForLookup(ids) {
+//   // console.log(ids)
+//   return api.items().many(ids).then((items) => {
+//     let newItems = {}
+//     items.forEach((item) => {
+//       newItems[item.id] = item
+//     })
+//     return newItems
+//   })
+// }
     
 
 
