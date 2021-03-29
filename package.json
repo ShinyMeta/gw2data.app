@@ -4,19 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prod": "concurrently  -n \"vuecli,server\" -c \"bgBlue.bold,bgGreen.bold\"  \"bnr client_prod\" \"bnr server_prod\"",
+    "prod": "npm run prodBuild && bnr server_prod",
+    "prod_old": "concurrently  -n \"vuecli,server\" -c \"bgBlue.bold,bgGreen.bold\"  \"bnr client_prod\" \"bnr server_prod\"",
     "dev": "concurrently  -n \"vuecli,server\" -c \"bgBlue.bold,bgGreen.bold\"  \"bnr client_dev\" \"bnr server_dev\"",
+    "prodBuild": "cd server&&npm i&&cd ../client&&npm i&&npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "betterScripts": {
     "client_prod": {
-      "command": "cd client&npm i&npm run build",
+      "command": "cd client&&npm run build",
       "env": {
         "NODE_ENV": "production"
       }
     },
     "server_prod": {
-      "command": "cd server&npm i&npm start",
+      "command": "cd server&&npm start",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "dbMigrate_prod": {
+      "command": "cd server/db/mysqlDB&knex migrate:latest",
       "env": {
         "NODE_ENV": "production"
       }
@@ -29,6 +37,12 @@
     },
     "server_dev": {
       "command": "cd server&npm run dev",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "dbMigrate_dev": {
+      "command": "cd server/db/mysqlDB&knex migrate:latest",
       "env": {
         "NODE_ENV": "development"
       }
