@@ -11,7 +11,8 @@ export default {
       email: null
     },
     apikeys: [],
-    selectedApiKey: null
+    selectedApiKey: null,
+    apikeysLoaded: null,
     
   },
 
@@ -19,6 +20,7 @@ export default {
     user: state => state.user,
     apikeys: state => state.apikeys,
     selectedApiKey: state => state.selectedApiKey,
+    apikeysLoaded: state => state.apikeysLoaded,
   },
 
   actions: {
@@ -55,7 +57,7 @@ export default {
         return Promise.reject('no user in state')
       }
       
-      return axios.get(`/api/account/apikeys`)
+      const apikeysLoaded = axios.get(`/api/account/apikeys`)
         .then((response) => {
           if (response.data !== null) {
             console.log(response.data)
@@ -68,7 +70,8 @@ export default {
             return false
           }
         }).catch(console.error)
-
+      commit('setApikeysLoaded', apikeysLoaded)
+      return apikeysLoaded
     },
 
     clearApiKeys({commit}) {
@@ -108,6 +111,9 @@ export default {
     },
     setApiKeys(state, apikeys) {
       state.apikeys = apikeys
+    },
+    setApikeysLoaded(state, apikeysLoaded) {
+      state.apikeysLoaded = apikeysLoaded
     },
     clearApiKeys(state) {
       state.apikeys = []

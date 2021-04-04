@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
+    path: '/accountStateCompare',
     name: 'AccountStateCompare',
     component: AccountStateCompare,
     meta: {requiresAuth: true},
@@ -48,6 +48,12 @@ Vue.use(VueRouter)
     path: '/DataRecordDetail/:record_id',
     name: 'Data Record Detail',
     component: () => import('@/views/DataRecordDetail.vue'),
+    meta: {requiresAuth: true},
+  },
+  {
+    path: '/myTags',
+    name: 'My Tags',
+    component: () => import('@/views/MyTags.vue'),
     meta: {requiresAuth: true},
   },
 

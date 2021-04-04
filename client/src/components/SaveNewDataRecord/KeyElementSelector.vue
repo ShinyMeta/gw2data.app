@@ -3,11 +3,27 @@
     v-model="selectedElement"
     :items="sortedFilteredElements"
     @change="selectOnChange"
+    @blur="onBlur"
 
-    label="Select the Key Element for this Record"
+    :error-messages="errorMessages"
+    label="Select the Key Element for this Record*"
     return-object
-    
+    :filled="filled"
+    :outlined="outlined"
+    height="104"
   >
+
+    <template v-slot:prepend-item>
+      <v-text-field
+        v-model="search"
+        label="Click here to filter list"
+        @blur="onBlur"
+        class="mx-2"
+      ></v-text-field>
+    </template>
+
+
+
     <template v-slot:selection="data">
       <item
         :imageUrl="data.item.icon"
@@ -41,11 +57,16 @@ export default {
   props: {
     value: Object,
     elements: Array,
-    search: String
+    preselected: Object,
+    // oldSearch: String,
+    filled: Boolean,
+    outlined: Boolean,
+    errorMessages: String||Array,
   },
   data() {
     return {
-      selectedElement: null
+      selectedElement: null,
+      search: ''
     } 
   },
   computed:{
@@ -69,7 +90,17 @@ export default {
     // ...mapActions([
     // ]),
     selectOnChange() {
-      console.log(this.selectedElement)
+      this.$emit('input', this.selectedElement)
+    },
+    onBlur() {
+      this.search = ''
+    },
+  },
+  created() {
+    if (this.preselected) {
+      this.selectedElement = this.elements.find(y => {
+        return (y.element_id === this.preselected.element_id && y.element_type === this.preselected.element_type)
+      })
       this.$emit('input', this.selectedElement)
     }
   }

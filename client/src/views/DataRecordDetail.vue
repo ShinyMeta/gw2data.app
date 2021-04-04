@@ -1,20 +1,24 @@
 <template>
-  <div class="DataRecordDetail">
-    <v-container class="ma-12" v-if="lookupsReady">
+  <!-- <div class="DataRecordDetail"> -->
+    <v-container class="DataRecordDetail" v-if="lookupsReady">
       <v-row>
-        <v-col>
+        <v-col cols=4>
           <v-card>
             <v-card-title>
               {{dataRecordWithDetails.description}}
             </v-card-title>
             <v-card-subtitle>
-              {{dataRecordWithDetails.primary_tag}}
+              <tags-list-cell
+                :tagNames="dataRecordWithDetails.tags.map(x=>x.name)"
+                :primaryTagName="dataRecordWithDetails.primary_tag"
+              />
             </v-card-subtitle>
             <v-card-text>
               {{dataRecordWithDetails.details}}
             </v-card-text>
           </v-card>
         </v-col>
+
         <v-col>
           <v-card>
             <v-card-title>
@@ -34,7 +38,9 @@
                 />
             </v-card-text>
           </v-card>
-        </v-col><v-col>
+        </v-col>
+        
+        <v-col>
           <v-card>
             <v-card-title>
               {{dataRecordWithDetails.gw2_account_name}}
@@ -43,9 +49,17 @@
               {{dataRecordWithDetails.end_time.toLocaleString()}}
             </v-card-subtitle>
 
-            <v-card-text>
+            <!-- <v-card-text>
               No Line Edits
-            </v-card-text>
+            </v-card-text> -->
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <data-record-form-button
+                :dataRecord="dataRecordWithDetails"
+                editForm
+                @edit="onEdit"
+              />
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
@@ -62,63 +76,25 @@
         </v-col>
       </v-row>
 
-
-      <!-- <v-container v-if="lookupsReady" >
-        <v-row>
-          <v-col cols=3>
-            Description:
-          </v-col>
-          <v-col cols=3>
-            {{dataRecordWithDetails.description}}
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols=3>
-            Primary Element:
-          </v-col>
-          <v-col cols=1>
-            <item 
-              :imageUrl="primaryElementDetails.icon"
-              :name="primaryElementDetails.name"
-              :id="dataRecordWithDetails.primary_element_id"
-              :description="primaryElementDetails.description"
-              :showPosNeg="false"
-              />
-          </v-col>
-          <v-col  cols=2 justify-self="left" align-self="center">
-            {{primaryElementDetails.name}}
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols=3>
-            {{dataRecordWithDetails.start_time}} - {{dataRecordWithDetails.end_time}}
-          </v-col>
-        </v-row>
-      </v-container> -->
-
     </v-container>
-    <!-- 
-      Description           Primary Element             Start Time-End Time
-      Details               Primary Tag                      GW2 Account Name
-      ...                   ...Tags                             Status
-      LINES
-      ...
-      ...
-     -->
 
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Item from '../components/Item.vue'
 import DataRecordTable from '../components/dataRecordViewer/DataRecordTable.vue'
+import DataRecordFormButton from '../components/SaveNewDataRecord/DataRecordFormButton.vue'
+import TagsListCell from '../components/dataRecordViewer/TagsListCell.vue'
 
 export default {
   name: 'DataRecordDetail',
   components: { 
     Item ,
     DataRecordTable,
+    DataRecordFormButton,
+    TagsListCell,
   },
   data() {
     return {
@@ -131,6 +107,9 @@ export default {
       'addItemsToLookupFromApi',
       'loadCurrencyLookupFromApi',
     ]),
+    onEdit() {
+      this.fetchDataRecordWithDetails(this.$route.params.record_id)
+    }
   },
   computed:{
     ...mapGetters([
