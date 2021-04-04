@@ -7,6 +7,12 @@ import store from '../store'
 Vue.use(VueRouter)
 
   const routes = [
+    {
+      path: '/',
+      name: 'Home',
+      component: () => import('@/views/Home.vue'),
+      meta: {requiresAuth: true},
+    },
   {
     path: '/accountStateCompare',
     name: 'AccountStateCompare',
