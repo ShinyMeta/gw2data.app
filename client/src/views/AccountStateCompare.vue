@@ -3,11 +3,18 @@
     
     <v-container>
       <v-row>
-        <v-col>
+        <v-col cols=12 lg=6>
           <api-key-select @change="clearAccountStates"/>
         </v-col>
-        <v-col>
-          <v-btn type="button" @click="fetchBothStates" v-if="selectedApiKey !== null"> Load/Refresh Account States </v-btn>
+        <v-col cols=6 lg=3>
+          <v-btn 
+            block 
+            @click="fetchBothStates" 
+            v-if="selectedApiKey !== null"> 
+            Refresh Live State 
+          </v-btn>
+        </v-col>
+        <v-col cols=6 lg=3>
           <!-- <v-btn type="button" @click="saveState" v-if="accountStateFromApi.wallet.length > 0"> Copy Live State to Save </v-btn> -->
           <v-dialog
             v-if="accountStateFromApi.wallet.length > 0"
@@ -16,6 +23,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn 
+                block 
                 v-bind="attrs"
                 v-on="on"
               >
@@ -200,11 +208,15 @@ export default {
       'user',
       'apikeys',
       'selectedApiKey',
+      'apikeysLoaded',
     ])
   },
   created() {
     this.loadCurrencyLookupFromApi()
     this.loadMaterialStorageDetailsFromApi()
+    this.apikeysLoaded.then(() => {
+      this.fetchBothStates()
+    })
   }
 
 }

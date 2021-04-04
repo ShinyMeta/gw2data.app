@@ -5,6 +5,7 @@
   <difference-table 
     @saveRecord="saveRecord"
     :dataRows="linesForDataRecord"
+    :dataRecord="dataRecord"
     description="diffs"
   />
 </div>
@@ -28,7 +29,57 @@ export default {
  
     data: () => {
     return {
-      diffCurrencies: []
+      
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'accountStateFromApi',
+      'accountStateFromSave',
+      'itemTotalsFromApi',
+      'itemTotalsFromSave',
+      'currencyLookup',
+      'itemLookup',
+      'user',
+      'selectedApiKey',
+    ]),
+    itemDiffs() {
+      return this.calculateItemTotalDiffs(this.itemTotalsFromSave, this.itemTotalsFromApi)
+    },
+    currDiffs() {
+      return this.calculateCurrencyTotalDiffs(this.accountStateFromSave.wallet, this.accountStateFromApi.wallet)
+    },
+    linesForDataRecord() {
+      let lines = []
+      this.currDiffs.forEach((currDiff) => {
+        const newLine = {
+          quantity: currDiff.diffCount,
+          element_id: currDiff.id,
+          element_type: 'Currency',
+        }
+        lines.push(newLine)
+      })
+
+      Object.keys(this.itemDiffs).forEach((item_id) => {
+        const newLine = {
+          quantity: this.itemDiffs[item_id].diffCount,
+          element_id: this.itemDiffs[item_id].id,
+          element_type: 'Item',
+          upgrades: this.itemDiffs[item_id].upgrades.join(',')
+        }
+        lines.push(newLine)
+      })
+      return lines
+    },
+    dataRecord() {
+      return  {
+        // user_id: this.user.id,
+        gw2_account_name: this.selectedApiKey.account_name,
+        start_time: this.accountStateFromSave.timestampOfState,
+        end_time: this.accountStateFromApi.timestampOfState,
+        lines: this.linesForDataRecord,
+        tags: [],
+      }
     }
   },
   methods: {
@@ -42,6 +93,7 @@ export default {
         gw2_account_name: this.selectedApiKey.account_name,
         start_time: this.accountStateFromSave.timestampOfState,
         end_time: this.accountStateFromApi.timestampOfState,
+        lines: this.linesForDataRecord
       }
       this.updateNewDataRecord(newDataRecord)
 
@@ -116,46 +168,6 @@ export default {
 
     sourceDetailString(beforeSources, afterSources) {
       return `    Before:\n${beforeSources.join('\n')}\n    After:\n${afterSources.join('\n')}`
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'accountStateFromApi',
-      'accountStateFromSave',
-      'itemTotalsFromApi',
-      'itemTotalsFromSave',
-      'currencyLookup',
-      'itemLookup',
-      'user',
-      'selectedApiKey',
-    ]),
-    itemDiffs() {
-      return this.calculateItemTotalDiffs(this.itemTotalsFromSave, this.itemTotalsFromApi)
-    },
-    currDiffs() {
-      return this.calculateCurrencyTotalDiffs(this.accountStateFromSave.wallet, this.accountStateFromApi.wallet)
-    },
-    linesForDataRecord() {
-      let lines = []
-      this.currDiffs.forEach((currDiff) => {
-        const newLine = {
-          quantity: currDiff.diffCount,
-          element_id: currDiff.id,
-          element_type: 'Currency',
-        }
-        lines.push(newLine)
-      })
-
-      Object.keys(this.itemDiffs).forEach((item_id) => {
-        const newLine = {
-          quantity: this.itemDiffs[item_id].diffCount,
-          element_id: this.itemDiffs[item_id].id,
-          element_type: 'Item',
-          upgrades: this.itemDiffs[item_id].upgrades.join(',')
-        }
-        lines.push(newLine)
-      })
-      return lines
     }
   }
 

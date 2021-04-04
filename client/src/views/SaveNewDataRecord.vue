@@ -1,67 +1,84 @@
 <template>
-  <div class="SaveNewDataRecord">
-      
-      
+  <v-container class="SaveNewDataRecord">
+    <v-row>
+      <v-col>
+        <v-text-field
+          v-model="description"
+          label="Description*"
+          filled
+          counter=200
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-textarea
+          v-model="details"
+          label="Details (optional)"
+          auto-grow
+          filled
+          counter=65535
+        ></v-textarea>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-select
+          v-model="primary_tag"
+          :items="tags"
+          label="Primary Tag*"
 
+          persistent-hint
+          :hint="tags.length>0?'':'Select at least one Tag first -->'"
 
-      <v-container>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="description"
-              label="Description"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-textarea
-              v-model="details"
-              label="Details"
-              auto-grow
-            ></v-textarea>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="primary_tag"
-              label="Primary Tag"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <key-element-selector
-              v-model="keyElement"
-              :elements="newDataRecordLinesWithElementDetails"
-              :search="keyElementSearch"
-            />
-          </v-col>
-          <v-col cols=4>
-            <v-text-field
-              v-model="keyElementSearch"
-              label="Filter Key Element Selector"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-btn @click="submitRecord">Submit Record</v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      
-      
-  </div>
+          chips
+          filled
+        ></v-select>
+        <!-- <v-text-field
+          v-model="primary_tag"
+          label="Primary Tag"
+          filled
+        ></v-text-field> -->
+      </v-col>
+      <v-col>
+        <tag-selector 
+          v-model="tags"
+          filled
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <key-element-selector
+          v-model="keyElement"
+          :elements="newDataRecordLinesWithElementDetails"
+          :search="keyElementSearch"
+          filled
+        />
+      </v-col>
+      <v-col cols=4>
+        <v-text-field
+          v-model="keyElementSearch"
+          label="Filter Key Element Selector"
+          filled
+          height="104"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn @click="submitRecord">Submit Record</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import KeyElementSelector from '../components/SaveNewDataRecord/KeyElementSelector.vue'
+import TagSelector from '../components/SaveNewDataRecord/TagSelector.vue'
 export default {
-  components: { KeyElementSelector },
+  components: { KeyElementSelector, TagSelector },
   name: 'SaveNewDataRecord',
 
   data: () => {
@@ -69,6 +86,7 @@ export default {
       description: '',
       details: '',
       primary_tag: '',
+      tags: [],
       keyElement: null,
       keyElementSearch:''
     }
@@ -78,6 +96,11 @@ export default {
       'updateNewDataRecord'
     ]),
     submitRecord() {
+      if (!this.description || !this.keyElement) {
+        return // form not filled out
+      }
+
+
       this.updateNewDataRecord({
         description: this.description,
         details: this.details,
@@ -88,6 +111,7 @@ export default {
       .then(() => {
         const newRecord = this.newDataRecord
         newRecord.lines = this.newDataRecordLines
+        newRecord.tags = this.tags.
         console.log('sending newRecord')
         console.log(newRecord)
         this.$axios.post(`/api/dataRecord/new`, newRecord)

@@ -10,7 +10,11 @@
         ></v-text-field>
       </v-col>
       <v-col class="d-flex justify-center">
-        <v-btn @click="() => {$emit('saveRecord')}">Save Record</v-btn>
+        <data-record-form 
+        newForm 
+        :dataRecord="dataRecord"
+        />
+        <!-- <v-btn @click="() => {$emit('saveRecord')}">Old Save Record</v-btn> -->
         <v-btn @click="downloadCsv">Download CSV</v-btn>
       </v-col>
     </v-row>
@@ -67,12 +71,14 @@
 <script>
 import {  mapGetters } from 'vuex'
 import Item from '../../components/Item.vue'
+import DataRecordForm from '../SaveNewDataRecord/DataRecordFormButton.vue'
 // import MyDataRecordsTableRow from './MyDataRecordsTableRow.vue'
 export default {
   name: 'MyDataRecordsTable',
   components: {
     // MyDataRecordsTableRow
-    Item
+    Item,
+    DataRecordForm
   },
   data() {
     return {
@@ -104,6 +110,8 @@ export default {
     // columnConfigs: Array, 
     dataRows: Array,
     description: String,
+    dataRecord: Object
+
   },
   computed: {
     ...mapGetters([
