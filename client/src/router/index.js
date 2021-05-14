@@ -57,6 +57,18 @@ Vue.use(VueRouter)
     meta: {requiresAuth: true},
   },
   {
+    path: '/myReports',
+    name: 'My Reports',
+    component: () => import('@/views/MyReports.vue'),
+    meta: {requiresAuth: true},
+  },
+  {
+    path: '/viewSummaryReport/:reportId',
+    name: 'Summary Report',
+    component: () => import('@/views/ViewSummaryReport.vue'),
+    meta: {requiresAuth: true},
+  },
+  {
     path: '/myTags',
     name: 'My Tags',
     component: () => import('@/views/MyTags.vue'),

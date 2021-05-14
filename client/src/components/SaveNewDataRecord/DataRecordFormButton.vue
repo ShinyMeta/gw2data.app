@@ -116,8 +116,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import KeyElementSelector from './KeyElementSelector.vue'
-import TagSelector from './TagSelector.vue'
+import KeyElementSelector from '../selects/KeyElementSelector.vue'
+import TagSelector from '../selects/TagSelector.vue'
 export default {
   components: { KeyElementSelector, TagSelector },
   name: 'DataRecordFormButton',

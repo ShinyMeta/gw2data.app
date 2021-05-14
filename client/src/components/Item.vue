@@ -7,8 +7,8 @@
     />
     <!-- <div id="quantityContainer" v-if="quantity"> -->
     <div id="quantity" 
-      v-if="quantity !== undefined"
-      :title="`${name} - ${id}\n${description}`">
+      v-if="quantity"
+      >
         {{quantity}}
       </div>
     <!-- </div> -->
@@ -29,7 +29,10 @@ name: "Item",
     name: String,
     id: Number,
     description: String,
-    quantity: Number,
+    quantity: {
+      type: Number,
+      default: null
+    },
     showPosNeg: {
       type: Boolean,
       default: false

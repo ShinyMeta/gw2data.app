@@ -135,7 +135,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import TagsListCell from '../components/dataRecordViewer/TagsListCell.vue'
 import Item from '../components/Item.vue'
-import TagSelector from '../components/SaveNewDataRecord/TagSelector.vue'
+import TagSelector from '../components/selects/TagSelector.vue'
 
 export default {
   name: 'DataRecordList',

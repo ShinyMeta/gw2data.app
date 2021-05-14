@@ -32,4 +32,5 @@ router
   .use('/accountState', require('./api/accountState.js'))
   .use('/account', require('./api/account.js'))
   .use('/dataRecord', require('./api/dataRecord.js'))
+  .use('/report', require('./api/report.js'))
 

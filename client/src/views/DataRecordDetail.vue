@@ -32,9 +32,7 @@
               <item 
                 :imageUrl="primaryElementDetails.icon"
                 :name="primaryElementDetails.name"
-                :id="dataRecordWithDetails.primary_element_id"
-                :description="primaryElementDetails.description"
-                :showPosNeg="false"
+                :quantity="primaryElementQuantity"
                 />
             </v-card-text>
           </v-card>
@@ -68,7 +66,7 @@
 
       <v-row>
         <v-col>
-          <DataRecordTable
+          <DataRecordLinesTable
             :dataRecordLinesWithElementDetails="dataRecordLinesWithElementDetails"
             :description="dataRecordWithDetails.description"
             :endTime="dataRecordWithDetails.end_time"
@@ -84,7 +82,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Item from '../components/Item.vue'
-import DataRecordTable from '../components/dataRecordViewer/DataRecordTable.vue'
+import DataRecordLinesTable from '../components/tables/DataRecordLinesTable.vue'
 import DataRecordFormButton from '../components/SaveNewDataRecord/DataRecordFormButton.vue'
 import TagsListCell from '../components/dataRecordViewer/TagsListCell.vue'
 
@@ -92,7 +90,7 @@ export default {
   name: 'DataRecordDetail',
   components: { 
     Item ,
-    DataRecordTable,
+    DataRecordLinesTable,
     DataRecordFormButton,
     TagsListCell,
   },
@@ -123,6 +121,16 @@ export default {
         type: this.dataRecordWithDetails.primary_element_type,
         id: this.dataRecordWithDetails.primary_element_id,
       })
+    },
+    primaryElementQuantity() {
+      let quantity = 0
+      this.dataRecordWithDetails.lines.forEach(line => {
+        if (line.element_id === this.dataRecordWithDetails.primary_element_id
+          && line.element_type === this.dataRecordWithDetails.primary_element_type) {
+            quantity += line.quantity
+          }
+      })
+      return quantity
     },
     dataRecordLinesWithElementDetails(){
       const result = [...this.dataRecordWithDetails.lines]
