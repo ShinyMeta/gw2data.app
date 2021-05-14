@@ -18,7 +18,6 @@
     <v-row>
       <v-col>
         <v-data-table
-          class="mx-12"
           :headers="headers"
           :items="dataRecordLinesWithElementDetails"
           :search="search"
@@ -36,9 +35,6 @@
             <item 
               :imageUrl="item.icon"
               :name="item.name"
-              :element_id="item.element_id"
-              :description="item.description"
-              :showPosNeg="false"
               />
           </template>  
 
@@ -49,9 +45,6 @@
                 :key="`${item.element_id}_upgrade_${index}`"
                 :imageUrl="itemLookup[upgradeId].icon"
                 :name="itemLookup[upgradeId].name"
-                :element_id="upgradeId"
-                :description="itemLookup[upgradeId].description"
-                :showPosNeg="false"
                 />
             </div>
           </template>  
@@ -103,6 +96,7 @@ export default {
     dataRecordLinesWithElementDetails: Array,
     description: String,
     endTime: Date,
+    csvFileName: String,
   },
   computed: {
     ...mapGetters([
@@ -138,7 +132,7 @@ export default {
       anchor.target = '_blank';
       // const end = new Date(this.dataRecordWithDetails.end_time)
       
-      anchor.download = `${this.description}_${this.endTime}.csv`;
+      anchor.download = this.csvFileName?`${this.csvFileName}.csv`:`${this.description}_${this.endTime}.csv`;
       anchor.click();
     }
   }

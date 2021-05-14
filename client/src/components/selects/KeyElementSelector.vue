@@ -40,7 +40,7 @@
         :id="data.item.element_id"
         :description="data.item.description"
         :showPosNeg="false"
-      /> {{ data.item.name }} ({{ data.item.quantity }})
+      /> {{ `${data.item.name}`+(data.item.quantity?` ( ${data.item.quantity} )`:'')}}
     </template>
   
   </v-select>
@@ -76,12 +76,13 @@ export default {
       const result = [...this.elements.filter(x => {
         return x.name.toLowerCase().match(this.search.toLowerCase())
       })]
-
-      result.sort((a,b) => {
-        const aVal = Math.abs(a.quantity),
-          bVal = Math.abs(b.quantity)
-        return bVal-aVal
-      })
+      if (result[0].quantity) {
+        result.sort((a,b) => {
+          const aVal = Math.abs(a.quantity),
+            bVal = Math.abs(b.quantity)
+          return bVal-aVal
+        })
+      }
 
       return result
     }

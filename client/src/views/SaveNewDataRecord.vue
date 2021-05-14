@@ -75,8 +75,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import KeyElementSelector from '../components/SaveNewDataRecord/KeyElementSelector.vue'
-import TagSelector from '../components/SaveNewDataRecord/TagSelector.vue'
+import KeyElementSelector from '../components/selects/KeyElementSelector.vue'
+import TagSelector from '../components/selects/TagSelector.vue'
 export default {
   components: { KeyElementSelector, TagSelector },
   name: 'SaveNewDataRecord',

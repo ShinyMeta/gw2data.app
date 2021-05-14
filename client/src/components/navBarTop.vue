@@ -7,6 +7,7 @@
       <v-btn block to="/accountStateCompare">Account State Compare</v-btn>
       <v-btn block to="/myDataRecords">My Data Records</v-btn>
       <v-btn block to="/myTags">My Tags</v-btn>
+      <v-btn block to="/myReports">My Reports</v-btn>
     </v-navigation-drawer>
 
     <v-app-bar app>

@@ -48,7 +48,7 @@ module.exports = (DB) => {
     },
 
     
-    update(data_record) {
+    update(data_record, user_id) {
       const recordToUpdate = {
         // user_id: data_record.user_id,
         // gw2_account_name: data_record.gw2_account_name,
@@ -83,7 +83,7 @@ module.exports = (DB) => {
         //     })
         // })
         .then(() => {
-          return this.saveRecordTags(data_record.id, data_record.tags, data_record.user_id)
+          return this.saveRecordTags(data_record.id, data_record.tags, user_id)
             .then(() => data_record.id)
         })
         .catch((err) => {
@@ -191,9 +191,9 @@ module.exports = (DB) => {
 
     
     // retrieveRecordLines(record_id) {}, // maybe??
-    retrieveRecordByRecordId(record_id) {
+    retrieveRecordByRecordId(record_id, user_id) {
       return DB('data_records')
-        .where({id: record_id})
+        .where({id: record_id, user_id})
         .first()
         .then((result) => {
           if (result === undefined) { return null }

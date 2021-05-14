@@ -32,7 +32,7 @@ router
   .post('/edit', (req, res, next) => {
     const recordToEdit = req.body
     recordToEdit.user_id = req.user.id
-    return DB.dataRecords.update(recordToEdit)
+    return DB.dataRecords.update(recordToEdit, req.user.id)
     .then((id) => {
       res.status(200).send({id})
     })
@@ -96,7 +96,7 @@ router
   
   .get('/:record_id', (req, res) => {
     const record_id = req.params.record_id
-    return DB.dataRecords.retrieveRecordByRecordId(record_id)
+    return DB.dataRecords.retrieveRecordByRecordId(record_id, req.user.id)
       .then((record) => {
         res.status(200).send(record)
       })
