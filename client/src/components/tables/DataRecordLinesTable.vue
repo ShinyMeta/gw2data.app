@@ -25,9 +25,9 @@
           group-by="element_type"
           group-asc
           show-group-by
-          :items-per-page="50"
+          :items-per-page="100"
           :footer-props="{
-              itemsPerPageOptions:[25,50,100,-1]
+              itemsPerPageOptions:[50,100,200-1]
             }"
         >
 
@@ -61,7 +61,7 @@ import {  mapGetters } from 'vuex'
 import Item from '../Item.vue'
 // import MyDataRecordsTableRow from './MyDataRecordsTableRow.vue'
 export default {
-  name: 'MyDataRecordsTable',
+  name: 'DataRecordLinesTable',
   components: {
     // MyDataRecordsTableRow
     Item
@@ -95,7 +95,10 @@ export default {
     // columnConfigs: Array, 
     dataRecordLinesWithElementDetails: Array,
     description: String,
-    endTime: Date,
+    endTime: {
+      type: Date,
+      default: new Date()
+    },
     csvFileName: String,
   },
   computed: {
