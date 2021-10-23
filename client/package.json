@@ -10,8 +10,9 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "gw2api-client": "^7.4.1",
+    "gw2api-client": "https://github.com/ShinyMeta/gw2api-client/tree/autoBatch",
     "vue": "^2.6.11",
+    "vue-async-computed": "^3.9.0",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"

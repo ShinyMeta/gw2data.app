@@ -8,6 +8,7 @@
       <v-btn block to="/myDataRecords">My Data Records</v-btn>
       <v-btn block to="/myTags">My Tags</v-btn>
       <v-btn block to="/myReports">My Reports</v-btn>
+      <v-btn block to="/liveTracking">Live Tracking</v-btn>
     </v-navigation-drawer>
 
     <v-app-bar app>

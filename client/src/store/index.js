@@ -5,6 +5,7 @@ import stateViewer from './modules/stateViewer'
 import activeUser from './modules/activeUser'
 import newDataRecord from './modules/newDataRecord'
 import dataRecords from './modules/dataRecords'
+import liveFeed from './modules/liveFeed'
 
 Vue.use(Vuex)
 
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     activeUser,
     newDataRecord,
     dataRecords,
+    liveFeed,
   }
 })

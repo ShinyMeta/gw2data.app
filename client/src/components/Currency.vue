@@ -1,26 +1,31 @@
 <template>
   <div class="currency">
-    <img class="currencyIcon"
+    <span v-if="this.id!=1">{{quantity}}
+    <currency-icon
       :src="imageUrl" 
       :alt="name" 
       :title="description"
-      />
-    <span>{{name}} : ({{quantity}})</span>
+    />
+    </span>
+    <currency-coin v-else
+      :description="description"
+      :quantity="quantity"
+      :showPosNeg="showPosNeg"
+    />
   </div>
 </template>
 
 <script>
+import CurrencyCoin from './CurrencyCoin.vue'
+import CurrencyIcon from './CurrencyIcon.vue'
 export default {
-name: "currency",
+  name: "currency",
   components:{
+    CurrencyIcon,
+    CurrencyCoin
 
   },
   props: {
-    //  :imageUrl="bankItem?itemLookup[bankItem.id].icon:null"
-    //  :name="bankItem?itemLookup[bankItem.id].name:null"
-    //  :id="bankItem?bankItem.id:null"
-    //  :description="bankItem?itemLookup[bankItem.id].description:null"
-    //  :quantity="bankItem?bankItem.count:null"
     imageUrl: {
       type: String,
       default: "https://render.guildwars2.com/file/98457F504BA2FAC8457F532C4B30EDC23929ACF9/619316.png"
@@ -33,16 +38,16 @@ name: "currency",
       type: Boolean,
       default: false
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
-.currency {
-  text-align: center;
+span{
+  display: inline-flex;
+  align-items: center;
 }
-
-.currencyIcon {
-  height: 30px;
+.currency {
+  text-align: right;
 }
 </style>
