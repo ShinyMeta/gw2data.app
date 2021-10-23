@@ -3,11 +3,15 @@
     <v-row>
       <v-col cols="12">
         <AddRule :itemsSoFar="itemsSoFar" :currenciesSoFar="currenciesSoFar" />
-        <rule-display
-          v-for="(rule, index) in rules"
-          :key="`rule-${index}`"
-          :rule="rule"
-        />
+      </v-col>
+    </v-row>
+    <v-row v-for="(rule, index) in rules" :key="`rule-${index}`">
+      <v-col>
+        <rule-display :rule="rule" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <v-tabs v-model="dataViewTab" centered>
           <v-tab :href="'#tab-live-feed'">
             Live Feed
@@ -129,4 +133,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.theme--dark.v-tabs-items {
+  background-color: inherit;
+}
+</style>

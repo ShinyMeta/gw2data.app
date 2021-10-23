@@ -7,6 +7,7 @@
       :imageUrl="imageUrl"
       :name="name"
       :description="description"
+      :rarity="rarity"
     />
   </div>
 </template>
@@ -45,6 +46,9 @@ export default {
     },
     description() {
       return this.itemFromApi ? this.itemFromApi.description : "";
+    },
+    rarity() {
+      return this.itemFromApi ? this.itemFromApi.rarity : "";
     },
   },
   methods: {},

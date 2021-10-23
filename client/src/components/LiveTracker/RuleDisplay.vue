@@ -20,12 +20,23 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="matchType === 'Id'">
+      <v-row v-if="matchType === 'Id' && rule.type === 'item'">
         <v-col cols="1">
           <item-smart :id="+rule.match.id" />
         </v-col>
         <v-col>
           {{ itemLookup[+rule.match.id].name }}
+        </v-col>
+      </v-row>
+      <v-row v-if="matchType === 'Id' && rule.type === 'currency'">
+        <v-col cols="1">
+          <item
+            :id="+rule.match.id"
+            :imageUrl="currencyLookup[+rule.match.id].icon"
+          />
+        </v-col>
+        <v-col v-if="rule.type === 'currency'">
+          {{ currencyLookup[+rule.match.id].name }}
         </v-col>
       </v-row>
 
@@ -54,9 +65,10 @@
 import { mapActions, mapGetters } from "vuex";
 // import KeyElementSelector from "../selects/KeyElementSelector.vue";
 import Rule from "../../js/liveFeed/Rule";
+import Item from "../Item.vue";
 import ItemSmart from "../ItemSmart.vue";
 export default {
-  components: { ItemSmart },
+  components: { ItemSmart, Item },
   name: "RuleDisplay",
   // components: { KeyElementSelector },
   data() {
