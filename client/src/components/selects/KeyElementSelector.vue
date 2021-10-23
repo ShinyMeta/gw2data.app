@@ -1,18 +1,17 @@
 <template>
-  <v-select class="KeyElementSelector"
+  <v-select
+    class="KeyElementSelector"
     v-model="selectedElement"
     :items="sortedFilteredElements"
     @change="selectOnChange"
     @blur="onBlur"
-
     :error-messages="errorMessages"
-    label="Select the Key Element for this Record*"
+    :label="label ? label : 'Select the Key Element for this Record*'"
     return-object
     :filled="filled"
     :outlined="outlined"
     height="104"
   >
-
     <template v-slot:prepend-item>
       <v-text-field
         v-model="search"
@@ -22,8 +21,6 @@
       ></v-text-field>
     </template>
 
-
-
     <template v-slot:selection="data">
       <item
         :imageUrl="data.item.icon"
@@ -31,7 +28,8 @@
         :id="data.item.element_id"
         :description="data.item.description"
         :showPosNeg="false"
-      /> {{ data.item.name }}
+      />
+      {{ data.item.name }}
     </template>
     <template v-slot:item="data">
       <item
@@ -40,20 +38,22 @@
         :id="data.item.element_id"
         :description="data.item.description"
         :showPosNeg="false"
-      /> {{ `${data.item.name}`+(data.item.quantity?` ( ${data.item.quantity} )`:'')}}
+      />
+      {{
+        `${data.item.element_id}-${data.item.name}` +
+          (data.item.quantity ? ` ( ${data.item.quantity} )` : "")
+      }}
     </template>
-  
   </v-select>
-  
 </template>
 
 <script>
 // import { mapActions, mapGetters } from 'vuex'
-import Item from '../Item.vue'
+import Item from "../Item.vue";
 
 export default {
   components: { Item },
-  name: 'KeyElementSelector',
+  name: "KeyElementSelector",
   props: {
     value: Object,
     elements: Array,
@@ -61,54 +61,57 @@ export default {
     // oldSearch: String,
     filled: Boolean,
     outlined: Boolean,
-    errorMessages: String||Array,
+    errorMessages: String || Array,
+    label: String,
   },
   data() {
     return {
       selectedElement: null,
-      search: ''
-    } 
+      search: "",
+    };
   },
-  computed:{
+  computed: {
     // ...mapGetters([
     // ])
     sortedFilteredElements() {
-      const result = [...this.elements.filter(x => {
-        return x.name.toLowerCase().match(this.search.toLowerCase())
-      })]
+      const result = [
+        ...this.elements.filter((x) => {
+          return x.name.toLowerCase().match(this.search.toLowerCase());
+        }),
+      ];
       if (result[0].quantity) {
-        result.sort((a,b) => {
+        result.sort((a, b) => {
           const aVal = Math.abs(a.quantity),
-            bVal = Math.abs(b.quantity)
-          return bVal-aVal
-        })
+            bVal = Math.abs(b.quantity);
+          return bVal - aVal;
+        });
       }
 
-      return result
-    }
+      return result;
+    },
   },
-  methods:{
+  methods: {
     // ...mapActions([
     // ]),
     selectOnChange() {
-      this.$emit('input', this.selectedElement)
+      this.$emit("input", this.selectedElement);
     },
     onBlur() {
-      this.search = ''
+      this.search = "";
     },
   },
   created() {
     if (this.preselected) {
-      this.selectedElement = this.elements.find(y => {
-        return (y.element_id === this.preselected.element_id && y.element_type === this.preselected.element_type)
-      })
-      this.$emit('input', this.selectedElement)
+      this.selectedElement = this.elements.find((y) => {
+        return (
+          y.element_id === this.preselected.element_id &&
+          y.element_type === this.preselected.element_type
+        );
+      });
+      this.$emit("input", this.selectedElement);
     }
-  }
-
-}
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -42,7 +42,7 @@ const routes = [
       path: '/liveTracking',
       name: 'Live Tracking (DRF)',
       component: () => import('@/views/LiveTracking.vue'),
-      meta: {requiresAuth: true},
+      // meta: {requiresAuth: true},
     },
     {
         path: '/saveNewDataRecord',

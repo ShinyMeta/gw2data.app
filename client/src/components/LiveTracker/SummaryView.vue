@@ -22,7 +22,7 @@ export default {
         return currentDrop.timestamp>latestTimeStampSoFar?
           currentDrop.timestamp:
           latestTimeStampSoFar
-      }))
+      },0))
     }
   },
   asyncComputed: {

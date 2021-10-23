@@ -131,7 +131,7 @@ function fetchMaterialStorageDetails(){
 
 function fetchItemsForLookup(ids) {
   // console.log(ids)
-  return api.items().many(ids).then((items) => {
+  return api.items().autoBatch().many(ids).then((items) => {
     let newItems = {}
     items.forEach((item) => {
       newItems[item.id] = item
