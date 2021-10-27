@@ -1,21 +1,24 @@
 <template>
   <v-container class="FeedView">
     <v-row>
-      <v-col cols="9">
-        drops from DRF:
-      </v-col>
+      <v-col cols="9"> drops from DRF ({{ dropsFromDrf.length }}): </v-col>
       <v-col>
         <v-btn @click="downloadCsv">Download CSV</v-btn>
       </v-col>
     </v-row>
 
     <v-row
-      v-for="(drop, dropindex) in dropsFromDrf"
+      v-for="(drop, dropindex) in dropsFromDrf.slice(0, countToShow)"
       :key="`droplist-${dropindex}`"
     >
       <v-col cols="10">
         <!-- {{ drop }} -->
         <drop-molecule :dropMolecule="drop" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn @click="showMore">SHOW MORE</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -32,10 +35,18 @@ export default {
   props: {
     dropsFromDrf: Array,
   },
+  data() {
+    return {
+      countToShow: 25,
+    };
+  },
   computed: {
     ...mapGetters(["itemLookup", "currencyLookup"]),
   },
   methods: {
+    showMore() {
+      this.countToShow += 25;
+    },
     getCSVString() {
       const columnTitles = [
         "dropIndex",
